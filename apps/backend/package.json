@@ -1,0 +1,13 @@
+{
+  "name": "todo-list",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "joaovictor1516",
+  "type": "commonjs",
+  "main": "index.js",
+  "repository":"github.com/joaovictor1516/todo-list",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
