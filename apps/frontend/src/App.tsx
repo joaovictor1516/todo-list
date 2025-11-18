@@ -1,13 +1,31 @@
-// import { useState } from 'react';
-// import  { CreateTask }  from "./components/createTask";
-import './index.css'
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { TodoList } from "./pages/todo-list";
+import { Register } from "./pages/register";
+import { Login } from "./pages/login";
+import { Error } from "./pages/error";
+import "./index.css";
 
 function App() {
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <TodoList/>,
+    errorElement: <Error/>
+  },
+  {
+    path: "/login",
+    element: <Login/>,
+    errorElement: <Error/>
+  },
+  {
+    path: "/register",
+    element: <Register/>,
+    errorElement: <Error/>
+  }
+])
 
   return (
-    <>
-      <h1 className="text-3xl font-bold underline">Olá</h1>
-    </>
+    <RouterProvider router={router}/>
   )
 }
 
