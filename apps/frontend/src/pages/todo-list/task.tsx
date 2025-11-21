@@ -5,9 +5,9 @@ export function Task(props: TaskInterface){
         <div className="flex flex-col">
             <h2 className="">{props.title}</h2>
             <p className="">{props.content}</p>
-            <button type="button" className="">Completar</button>
+            <button type="button" className="">Concluir</button>
             <button type="button" className="">Editar</button>
-            <button type="button" className="">Escluir</button>
+            <button type="button" className="">Excluir</button>
         </div>
     )
 }
