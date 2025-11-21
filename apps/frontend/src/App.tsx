@@ -5,7 +5,7 @@ import { Login } from "./pages/login";
 import { Error } from "./pages/error";
 import "./index.css";
 
-function App() {
+export function App() {
 const router = createBrowserRouter([
   {
     path: "/",
@@ -28,5 +28,3 @@ const router = createBrowserRouter([
     <RouterProvider router={router}/>
   )
 }
-
-export default App
