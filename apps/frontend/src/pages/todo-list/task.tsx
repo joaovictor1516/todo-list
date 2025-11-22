@@ -14,7 +14,7 @@ export function Task(props: TaskInterface){
             }
             
             <button type="button" className="">Editar</button>
-            <button type="button" className="">Excluir</button>
+            <button type="button" className="" onClick={() => props.deleteTask(props.id)}>Excluir</button>
         </div>
     )
 }

@@ -35,7 +35,19 @@ export function TodoList(){
             const updateTodo = {...completedTodo, isCompleted: true}
             setTasksCompleted([updateTodo,...tasksCompleted]);
         }
-        console.log("foi");
+    }
+
+    const deleteTask = (taskId: string) => {
+        const newTaskList = tasks.filter((task) => task.id !== taskId);
+        const newTaskComplited = tasksCompleted.filter((task) => task.id !== taskId);
+
+        if(newTaskList){
+            setTasks([...newTaskList]);
+        }
+        
+        if(newTaskComplited){
+            setTasksCompleted([...newTaskComplited]);
+        }
     }
 
     return(
@@ -50,6 +62,7 @@ export function TodoList(){
                             <Task 
                                 key={task.id} 
                                 {...task}
+                                deleteTask={() => deleteTask(task.id)}
                                 completeTask={() => completeTask(task.id)}
                             />
                         )
@@ -68,6 +81,7 @@ export function TodoList(){
                             <Task 
                                 key={task.id}
                                 {...task}
+                                deleteTask={() => deleteTask(task.id)}
                             />
                         )
                     })
