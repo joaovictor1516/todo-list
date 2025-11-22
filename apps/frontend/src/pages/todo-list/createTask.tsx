@@ -6,12 +6,13 @@ import { useState } from "react";
 export function CreateTask(props: NewTaskInterface){
 const [isOpen, setIsOpen] = useState(false);
 
-const { register, handleSubmit } = useForm<TaskInterface>();
+const { register, handleSubmit, reset } = useForm<TaskInterface>();
 
 const onSubmit = handleSubmit(async (task: TaskInterface) => {
     try{
         props.createTask(task)
         setIsOpen(false);
+        reset();
     } catch(error){
         console.error(error);
     }
@@ -19,25 +20,22 @@ const onSubmit = handleSubmit(async (task: TaskInterface) => {
 
 return (
     <Dialog.Root open={ isOpen } onOpenChange={ setIsOpen }>
-        <Dialog.Trigger className="bg-blue-500">
+        <Dialog.Trigger className="">
             Criar nova tarefa
         </Dialog.Trigger>
-
         <Dialog.Content className="">
             <Dialog.Title className="">
                 Nova tarefa
             </Dialog.Title>
-
             <form onSubmit={onSubmit} className="flex flex-col gap-1 items-center">
                 <label htmlFor="titleTaskInput">Titulo da atividade</label>
-                <input type="text" id="titleTaskInput" {...register("title", {required: "Titulo é um campo obrigatório!", minLength: 4})}/>
+                <input type="text" id="titleTaskInput" className="" {...register("title", {required: "Titulo é um campo obrigatório!", minLength: 4})}/>
 
                 <label htmlFor="contentTaskInput">Conteudo da atividade</label>
-                <input type="text" id="contentTaskInput" {...register("content", {required: "Deve ser escrito o conteudo da tarefa!", minLength: 4})}/>
-                
+                <input type="text" id="contentTaskInput" className="" {...register("content", {required: "Deve ser escrito o conteudo da tarefa!", minLength: 4})}/>
+    
                 <input type="submit" value="Criar atividade"/>
             </form>
-
             <Dialog.Close className="">
                 Cancelar
             </Dialog.Close>
