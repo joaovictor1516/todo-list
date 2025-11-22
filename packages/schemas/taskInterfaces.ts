@@ -3,6 +3,9 @@ export interface TaskInterface{
     title: string;
     content: string;
     isCompleted: boolean;
+    deleteTask?: (taskId: string) => void;
+    updateTask?: (taskId: string) => void;
+    completeTask?: (taskId: string) => void;
 }
 
 export interface NewTaskInterface{
