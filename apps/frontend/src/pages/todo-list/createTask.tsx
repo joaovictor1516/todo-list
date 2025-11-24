@@ -25,14 +25,16 @@ return (
         </Dialog.Trigger>
         <Dialog.Content className="">
             <Dialog.Title className="">
-                Nova tarefa
+                <h2 className="">
+                    Nova tarefa
+                </h2>
             </Dialog.Title>
             <form onSubmit={onSubmit} className="flex flex-col gap-1 items-center">
-                <label htmlFor="titleTaskInput">Titulo da atividade</label>
-                <input type="text" id="titleTaskInput" className="" {...register("title", {required: "Titulo é um campo obrigatório!", minLength: 4})}/>
+                <label htmlFor="title">Titulo:</label>
+                <input type="text" id="title" className="" {...register("title", {required: "Titulo é um campo obrigatório!", minLength: 4})}/>
 
-                <label htmlFor="contentTaskInput">Conteudo da atividade</label>
-                <input type="text" id="contentTaskInput" className="" {...register("content", {required: "Deve ser escrito o conteudo da tarefa!", minLength: 4})}/>
+                <label htmlFor="content">Conteudo:</label>
+                <input type="text" id="content" className="" {...register("content", {required: "Deve ser escrito o conteudo da tarefa!", minLength: 4})}/>
     
                 <input type="submit" value="Criar atividade"/>
             </form>
