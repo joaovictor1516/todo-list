@@ -31,7 +31,7 @@ export function UpdateTask(props: TaskInterface){
                 </Dialog.Title>
 
                 <form className="" onSubmit={save}>
-                    <label htmlFor="title" className="">Titulo</label>
+                    <label htmlFor="title" className="">Titulo:</label>
                     <input type="text" id="title" className="" content={props.title} {...register("title")}/>
 
                     <label htmlFor="content" className="">Conteudo:</label>

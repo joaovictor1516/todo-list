@@ -23,12 +23,14 @@ return (
         <Dialog.Trigger className="">
             Criar nova tarefa
         </Dialog.Trigger>
+        
         <Dialog.Content className="">
             <Dialog.Title className="">
                 <h2 className="">
                     Nova tarefa
                 </h2>
             </Dialog.Title>
+        
             <form onSubmit={onSubmit} className="flex flex-col gap-1 items-center">
                 <label htmlFor="title">Titulo:</label>
                 <input type="text" id="title" className="" {...register("title", {required: "Titulo é um campo obrigatório!", minLength: 4})}/>
