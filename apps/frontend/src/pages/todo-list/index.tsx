@@ -1,5 +1,5 @@
 import type { TaskInterface } from "../../../../../packages/schemas/taskInterfaces";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { CreateTask } from "./createTask";
 import { toast } from "sonner";
 import { Task } from "./task";
@@ -7,6 +7,9 @@ import { Task } from "./task";
 export function TodoList(){
     const [tasks, setTasks] = useState<TaskInterface[]>([]);
     const [tasksCompleted, setTasksCompleted] = useState<TaskInterface[]>([]);
+
+    const tasksSaves = (tasks: TaskInterface[]) => localStorage.setItem("tasks", JSON.stringify(tasks));
+    const tasksCompletedSaves = (tasks: TaskInterface[]) => localStorage.setItem("tasks", JSON.stringify(tasks));
 
     const createTask = async (newTask: TaskInterface) => {
         const task: TaskInterface = {
@@ -18,8 +21,10 @@ export function TodoList(){
 
         setTasks([...tasks, task]);
 
+        tasksSaves([...tasks, task]);
+
         toast.success("Atividade criada com sucesso!", {
-            duration: 5000,
+            duration: 5000
         })
     }
 
@@ -29,11 +34,13 @@ export function TodoList(){
         
         if(newTaskList){
             setTasks([...newTaskList]);
+            tasksSaves([...newTaskList]);
         }
 
         if(completedTodo){
-            const updateTodo = {...completedTodo, isCompleted: true}
+            const updateTodo = {...completedTodo, isCompleted: true};
             setTasksCompleted([updateTodo,...tasksCompleted]);
+            tasksCompletedSaves([updateTodo, ...tasksCompleted]);
         }
     }
 
@@ -42,13 +49,29 @@ export function TodoList(){
         const newTaskComplited = tasksCompleted.filter((task) => task.id !== taskId);
 
         if(newTaskList){
-            setTasks([...newTaskList]);
+            setTasks(newTaskList);
+            tasksSaves(newTaskList);
         }
         
         if(newTaskComplited){
-            setTasksCompleted([...newTaskComplited]);
+            setTasksCompleted(newTaskComplited);
+            tasksCompletedSaves(newTaskComplited);
         }
     }
+
+    useEffect(() => {
+        const tasksSaved = localStorage.getItem("tasks");
+        const tasksCompletedSaved = localStorage.getItem("tasksCompleted");
+
+        if(tasks.length === 0 && tasksSaved !== null){
+            setTasks([...JSON.parse(tasksSaved)]);
+            
+        }
+
+        if(tasksCompleted.length === 0 && tasksCompletedSaved !== null){
+            setTasksCompleted([...JSON.parse(tasksCompletedSaved)]);
+        }
+    }, []);
 
     return(
         <div className="">
