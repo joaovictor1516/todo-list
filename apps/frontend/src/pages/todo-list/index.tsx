@@ -9,7 +9,7 @@ export function TodoList(){
     const [tasksCompleted, setTasksCompleted] = useState<TaskInterface[]>([]);
 
     const tasksSaves = (tasks: TaskInterface[]) => localStorage.setItem("tasks", JSON.stringify(tasks));
-    const tasksCompletedSaves = (tasks: TaskInterface[]) => localStorage.setItem("tasks", JSON.stringify(tasks));
+    const tasksCompletedSaves = (tasks: TaskInterface[]) => localStorage.setItem("tasksCompleted", JSON.stringify(tasks));
 
     const createTask = async (newTask: TaskInterface) => {
         const task: TaskInterface = {
