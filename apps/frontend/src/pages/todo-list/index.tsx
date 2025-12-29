@@ -1,18 +1,18 @@
-import type { TaskInterface } from "../../../../../packages/schemas/taskInterfaces";
+import type { TaskProps } from "../../../../../packages/schemas/taskInterfaces";
 import { useState, useEffect } from "react";
 import { CreateTask } from "./createTask";
 import { toast } from "sonner";
 import { Task } from "./task";
 
 export function TodoList(){
-    const [tasks, setTasks] = useState<TaskInterface[]>([]);
-    const [tasksCompleted, setTasksCompleted] = useState<TaskInterface[]>([]);
+    const [tasks, setTasks] = useState<TaskProps[]>([]);
+    const [tasksCompleted, setTasksCompleted] = useState<TaskProps[]>([]);
 
-    const tasksSaves = (tasks: TaskInterface[]) => localStorage.setItem("tasks", JSON.stringify(tasks));
-    const tasksCompletedSaves = (tasks: TaskInterface[]) => localStorage.setItem("tasksCompleted", JSON.stringify(tasks));
+    const tasksSaves = (tasks: TaskProps[]) => localStorage.setItem("tasks", JSON.stringify(tasks));
+    const tasksCompletedSaves = (tasks: TaskProps[]) => localStorage.setItem("tasksCompleted", JSON.stringify(tasks));
 
-    const createTask = async (newTask: TaskInterface) => {
-        const task: TaskInterface = {
+    const createTask = async (newTask: TaskProps) => {
+        const task: TaskProps = {
             id: crypto.randomUUID(),
             title: newTask.title,
             content: newTask.content,
