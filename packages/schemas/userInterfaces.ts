@@ -1,7 +1,7 @@
 import { taskType } from "./taskInterfaces";
 import { z } from "zod";
 
-const userType = z.object({
+export const userType = z.object({
     id: z.uuid(),
     name: z.string(),
     email: z.email(),
