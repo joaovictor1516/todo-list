@@ -71,48 +71,52 @@ export function TodoList(){
         if(tasksCompleted.length === 0 && tasksCompletedSaved !== null){
             setTasksCompleted([...JSON.parse(tasksCompletedSaved)]);
         }
-    }, []);
+    }, [tasks.length, tasksCompleted.length]);
 
     return(
-        <div className="">
+        <div className="main">
             <CreateTask createTask={createTask}/>
-            <h1 className="">Tarefas:</h1>
             
-            {
-                tasks.length > 0 ?
-                    tasks.map((task) => {
-                        return(
-                            <Task 
-                                key={task.id} 
-                                {...task}
-                                deleteTask={() => deleteTask(task.id)}
-                                completeTask={() => completeTask(task.id)}
-                            />
-                        )
-                    }) :
+            <div className="">
+                <h1 className="">Tarefas:</h1>
                 
-                    (
-                        <span className="">Nenhuma tarefa criada :(</span>
-                    )
-            }
-            
-            <h1 className="">Concluido:</h1>
-            {
-                tasksCompleted.length > 0 ? 
-                    tasksCompleted.map((task) => {
-                        return(
-                            <Task 
-                                key={task.id}
-                                {...task}
-                                deleteTask={() => deleteTask(task.id)}
-                            />
+                {
+                    tasks.length > 0 ?
+                        tasks.map((task) => {
+                            return(
+                                <Task
+                                    key={task.id}
+                                    {...task}
+                                    deleteTask={() => deleteTask(task.id)}
+                                    completeTask={() => completeTask(task.id)}
+                                />
+                            )
+                        }) :
+                
+                        (
+                            <span className="">Nenhuma tarefa criada.</span>
                         )
-                    })
-
-                    :(
-                        <span className="">Nenhuma tarefa foi concluida :(</span>
-                    )
-            }
+                }
+            </div>
+            
+            <div className="">
+                <h1 className="">Concluido:</h1>
+                {
+                    tasksCompleted.length > 0 ?
+                        tasksCompleted.map((task) => {
+                            return(
+                                <Task
+                                    key={task.id}
+                                    {...task}
+                                    deleteTask={() => deleteTask(task.id)}
+                                />
+                            )
+                        })
+                        :(
+                            <span className="">Nenhuma tarefa concluida.</span>
+                        )
+                }
+            </div>
         </div>
     )
 }

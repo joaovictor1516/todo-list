@@ -1,1 +1,24 @@
-@import "tailwindcss";
+@import 'tailwindcss' layer(base);
+
+.main{
+    @apply flex content-evenly items-center flex-col gap-2 font-sans;
+}
+
+.trigger{
+    @apply flex content-center bg-zinc-700 text-green-700 rounded-md p-1;
+}
+
+.dialog{
+    @apply text-zinc-900 bg-zinc-300 dark:text-zinc-400 dark:bg-zinc-700 rounded-lg flex flex-col items-center gap-2;
+}
+
+.form{
+    @apply flex flex-col items-center gap-1;
+    label{
+        @apply text-xs;
+    }
+    input{
+        @apply border border-zinc-500 rounded-sm text-xs p-0.5;
+    }
+}
+
