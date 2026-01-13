@@ -13,7 +13,7 @@ app.register(fastifySwagger, {
         produces: ["aplication/json"],
         info: {
             title: "DailyTasks",
-            description: "API da aplicação de tarefas.",
+            description: "API do DailyTasks.",
             version: "1.0.0"
         }
     },
