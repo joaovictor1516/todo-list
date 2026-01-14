@@ -2,6 +2,7 @@ import { jsonSchemaTransform, serializerCompiler, validatorCompiler } from "fast
 import fastifySwaggerUI from "@fastify/swagger-ui"
 import fastifySwagger from "@fastify/swagger";
 import { env } from "./libs/envSchema";
+import fastifyJwt from "@fastify/jwt";
 import cors from "@fastify/cors";
 import fastify from "fastify";
 
@@ -26,6 +27,10 @@ app.register(fastifySwaggerUI, {
 
 app.register(cors, {
     origin: env.WEB_BASE_URL
+});
+
+app.register(fastifyJwt, {
+    secret: env.JWT_SECRET
 });
 
 app.setSerializerCompiler(serializerCompiler);
