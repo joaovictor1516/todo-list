@@ -6,8 +6,10 @@ export const userType = z.object({
     name: z.string(),
     email: z.email(),
     points: z.number(),
-    todoList: z.array(taskType)
-})
+    todoList: z.array(taskType),
+    authState: z.boolean(),
+    authCode: z.string().optional()
+});
 
 export type UserInterface = z.infer<typeof userType>;
 
