@@ -1,5 +1,5 @@
-import { jsonSchemaTransform, serializerCompiler, validatorCompiler } from "fastify-type-provider-zod";
-import fastifySwaggerUI from "@fastify/swagger-ui"
+import { jsonSchemaTransform, serializerCompiler, validatorCompiler, ZodTypeProvider } from "fastify-type-provider-zod";
+import fastifySwaggerUI from "@fastify/swagger-ui";
 import fastifySwagger from "@fastify/swagger";
 import { env } from "./libs/envSchema";
 import fastifyJwt from "@fastify/jwt";
@@ -7,6 +7,8 @@ import cors from "@fastify/cors";
 import fastify from "fastify";
 
 const app = fastify();
+
+export const typeProvider = app.withTypeProvider<ZodTypeProvider>();
 
 app.register(fastifySwagger, {
     swagger: {
