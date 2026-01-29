@@ -1,5 +1,6 @@
 import { jsonSchemaTransform, serializerCompiler, validatorCompiler, ZodTypeProvider } from "fastify-type-provider-zod";
 import fastifySwaggerUI from "@fastify/swagger-ui";
+import { errorHandler } from "./libs/errorHandler";
 import fastifySwagger from "@fastify/swagger";
 import { env } from "./libs/envSchema";
 import fastifyJwt from "@fastify/jwt";
@@ -35,6 +36,7 @@ app.register(fastifyJwt, {
     secret: env.JWT_SECRET
 });
 
+app.setErrorHandler(errorHandler);
 app.setSerializerCompiler(serializerCompiler);
 app.setValidatorCompiler(validatorCompiler);
 
