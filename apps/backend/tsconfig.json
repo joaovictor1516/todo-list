@@ -6,7 +6,7 @@
     "lib": ["es2024", "dom", "dom.iterable"],
     "module": "node16",
     "target": "es2022",
-
+    "noEmit": true,
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
