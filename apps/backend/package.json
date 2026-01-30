@@ -8,7 +8,8 @@
   "main": "index.js",
   "repository": "github.com/joaovictor1516/todo-list",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "tsx --watch src/index.ts",
+    "test": "jest"
   },
   "devDependencies": {
     "@types/jest": "^30.0.0",
