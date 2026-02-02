@@ -1,52 +1,90 @@
-import { getTaskApi, createTaskApi, updateTaskApi, deleteTaskApi } from "../api/task.api";
-import { type TaskInterface } from "../../../../packages/schemas/taskInterfaces";
+import { getTasksApi, createTaskApi, updateTaskApi, deleteTaskApi } from "../api/task.api";
+import type { TaskService, TaskInterface } from "../../../../packages/schemas/taskInterfaces";
 
-export async function getTaskService() {
+export async function getTaskService(): Promise<TaskService<TaskInterface[]>>{
     try{
-        const tasks: TaskInterface[] = await getTaskApi();
-        return tasks;
+        const tasks: TaskInterface[] = await getTasksApi();
+        return {
+            data: tasks,
+            message: "tasks_taked"
+        }
     }
     catch(error){
-        console.error(error);
-        return "Nenhuma task encontrada.";
-    }
-};
+        let errorMessage = "fail_task_creat";
 
-export async function createTaskService(task: TaskInterface){
+        if(error instanceof Error){
+            errorMessage = error.message;
+        }
+
+        return{
+            data: null,
+            error: errorMessage,
+        }
+    }
+}
+
+export async function createTaskService(task: TaskInterface): Promise<TaskService<TaskInterface>>{
     try{
         const  newTask: TaskInterface = await createTaskApi(task);
         return {
-            newTask,
-            message: "Tarefa criada com sucesso."
+            data: newTask,
+            message: "task_created"
         };
     }
     catch(error){
-        console.error(error);
-        return "Falha ao criar a tarefa.";
-    }
-};
+        let errorMessage = "fail_task_creat";
 
-export async function updateTaskService(taskId: string, task: TaskInterface){
+        if(error instanceof Error){
+            errorMessage = error.message;
+        }
+
+        return {
+            data: null,
+            error: errorMessage
+        }
+    }
+}
+
+export async function updateTaskService(taskId: string, task: TaskInterface): Promise<TaskService<TaskInterface>>{
     try{
         const taskUpdated: TaskInterface = await updateTaskApi(taskId, task);
         return{
-            taskUpdated,
-            message: "Tarefa atualizada com sucesso."
-        };
+            data: taskUpdated,
+            message: "task_updated"
+        }
     }
     catch(error){
-        console.error(error);
-        return "Falha ao atualizar a tarefa.";
-    }
-};
+        let errorMessage = "error_task_update";
 
-export async function deleteTaskService(taskId: string){
+        if(error instanceof Error){
+            errorMessage = error.message;
+        }
+        
+        return {
+            data: null,
+            error: errorMessage
+        }
+    }
+}
+
+export async function deleteTaskService(taskId: string): Promise<TaskService<null>>{
     try{
         await deleteTaskApi(taskId);
-        return "Tarefa removida com sucesso.";
+        return {
+            data: null,
+            message: "task_deleted"
+        }
     }
     catch(error){
-        console.error(error);
-        return "Falha ao remover a tarefa.";
+        let errorMessage = "error_task_delet";
+
+        if(error instanceof Error){
+            errorMessage = error.message;
+        }
+
+        return {
+            data: null,
+            error: errorMessage
+        }
     }
-};
+}
