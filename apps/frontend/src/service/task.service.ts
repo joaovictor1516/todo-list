@@ -10,7 +10,7 @@ export async function getTaskService(): Promise<TaskService<TaskInterface[]>>{
         }
     }
     catch(error){
-        let errorMessage = "fail_task_creat";
+        let errorMessage = "fail_take_taskes";
 
         if(error instanceof Error){
             errorMessage = error.message;
