@@ -1,7 +1,7 @@
 import { getTasksApi, createTaskApi, updateTaskApi, deleteTaskApi } from "../api/task.api";
 import type { TaskService, TaskInterface } from "../../../../packages/schemas/taskInterfaces";
 
-export async function getTaskService(): Promise<TaskService<TaskInterface[]>>{
+export async function getTasksService(): Promise<TaskService<TaskInterface[]>>{
     try{
         const tasks: TaskInterface[] = await getTasksApi();
         return {
