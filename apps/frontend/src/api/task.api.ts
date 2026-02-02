@@ -1,7 +1,7 @@
 import type { TaskInterface } from "../../../../packages/schemas/taskInterfaces";
 import { api } from "./axios";
 
-export async function getTaskApi(): Promise<TaskInterface[]>{
+export async function getTasksApi(): Promise<TaskInterface[]>{
     const response = await api.get("/task");
 
     return response.data.tasks as TaskInterface[];
