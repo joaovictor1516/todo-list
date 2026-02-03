@@ -9,8 +9,8 @@ export async function getTasksService(): Promise<TaskService<TaskInterface[]>>{
             message: "tasks_taked"
         }
     }
-    catch(error){
-        let errorMessage = "fail_take_taskes";
+    catch(error: unknown){
+        let errorMessage = "fail_take_tasks";
 
         if(error instanceof Error){
             errorMessage = error.message;
@@ -31,8 +31,8 @@ export async function createTaskService(task: TaskInterface): Promise<TaskServic
             message: "task_created"
         };
     }
-    catch(error){
-        let errorMessage = "fail_task_creat";
+    catch(error: unknown){
+        let errorMessage = "fail_task_create";
 
         if(error instanceof Error){
             errorMessage = error.message;
@@ -45,7 +45,7 @@ export async function createTaskService(task: TaskInterface): Promise<TaskServic
     }
 }
 
-export async function updateTaskService(taskId: string, task: TaskInterface): Promise<TaskService<TaskInterface>>{
+export async function updateTaskService(taskId: TaskInterface["id"], task: TaskInterface): Promise<TaskService<TaskInterface>>{
     try{
         const taskUpdated: TaskInterface = await updateTaskApi(taskId, task);
         return{
@@ -53,7 +53,7 @@ export async function updateTaskService(taskId: string, task: TaskInterface): Pr
             message: "task_updated"
         }
     }
-    catch(error){
+    catch(error: unknown){
         let errorMessage = "error_task_update";
 
         if(error instanceof Error){
@@ -67,7 +67,7 @@ export async function updateTaskService(taskId: string, task: TaskInterface): Pr
     }
 }
 
-export async function deleteTaskService(taskId: string): Promise<TaskService<null>>{
+export async function deleteTaskService(taskId: TaskInterface["id"]): Promise<TaskService<null>>{
     try{
         await deleteTaskApi(taskId);
         return {
@@ -75,8 +75,8 @@ export async function deleteTaskService(taskId: string): Promise<TaskService<nul
             message: "task_deleted"
         }
     }
-    catch(error){
-        let errorMessage = "error_task_delet";
+    catch(error: unknown){
+        let errorMessage = "error_task_delete";
 
         if(error instanceof Error){
             errorMessage = error.message;
