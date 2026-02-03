@@ -2,8 +2,10 @@ import z from "zod";
 
 export const taskType = z.object({
     id: z.uuid(),
-    title: z.string().min(5),
+    title: z.string().min(3),
     content: z.string().min(5),
+    createdAt: z.string().nullish(),
+    eventDate: z.date().nullish(),
     isCompleted: z.boolean()
 });
 
