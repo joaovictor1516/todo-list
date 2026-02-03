@@ -25,10 +25,10 @@ export function TodoList(){
 
         toast.success("Atividade criada com sucesso!", {
             duration: 5000
-        })
+        });
     }
 
-    const completeTask = (taskId: string) => {
+    const completeTask = (taskId: TaskProps["id"]) => {
         const completedTodo = tasks.find((task) => task.id === taskId);
         const newTaskList = tasks.filter((task) => task.id !== taskId);
         
@@ -44,7 +44,7 @@ export function TodoList(){
         }
     }
 
-    const deleteTask = (taskId: string) => {
+    const deleteTask = (taskId: TaskProps["id"]) => {
         const newTaskList = tasks.filter((task) => task.id !== taskId);
         const newTaskComplited = tasksCompleted.filter((task) => task.id !== taskId);
 
@@ -65,7 +65,6 @@ export function TodoList(){
 
         if(tasks.length === 0 && tasksSaved !== null){
             setTasks([...JSON.parse(tasksSaved)]);
-            
         }
 
         if(tasksCompleted.length === 0 && tasksCompletedSaved !== null){

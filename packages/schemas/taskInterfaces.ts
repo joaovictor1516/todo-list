@@ -10,9 +10,9 @@ export const taskType = z.object({
 export type TaskInterface = z.infer<typeof taskType>;
 
 export interface TaskProps extends TaskInterface{
-    deleteTask?: (taskId: string) => void;
-    updateTask?: (taskId: string) => void;
-    completeTask?: (taskId: string) => void;
+    deleteTask?: (taskId: TaskInterface["id"]) => void;
+    updateTask?: (taskId: TaskInterface["id"]) => void;
+    completeTask?: (taskId: TaskInterface["id"]) => void;
 };
 
 export interface NewTaskInterface{

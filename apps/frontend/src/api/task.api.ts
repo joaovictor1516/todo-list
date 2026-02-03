@@ -15,7 +15,7 @@ export async function createTaskApi(task: TaskInterface): Promise<TaskInterface>
     return response.data.task as TaskInterface;
 }
 
-export async function updateTaskApi(taskId: string, task: TaskInterface): Promise<TaskInterface>{
+export async function updateTaskApi(taskId: TaskInterface["id"], task: TaskInterface): Promise<TaskInterface>{
     const response = await api.put(`/task/${taskId}`, {
         taskId,
         task
@@ -24,6 +24,6 @@ export async function updateTaskApi(taskId: string, task: TaskInterface): Promis
     return response.data.task as TaskInterface;
 }
 
-export async function deleteTaskApi(taskId: string): Promise<void>{
+export async function deleteTaskApi(taskId: TaskInterface["id"]): Promise<void>{
     await api.delete(`/task/${taskId}`);
 }
