@@ -56,4 +56,8 @@ export async function TaskRoute(app: typeof typeProvider){
         },
         deleteTask
     );
+
+    app.head("/tasks", async (_, reply) => {
+        reply.code(200).send();
+    });
 }
