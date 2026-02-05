@@ -20,9 +20,3 @@ export interface TaskProps extends TaskInterface{
 export interface NewTaskInterface{
     createTask: (data: TaskInterface) => void;
 };
-
-export interface TaskService<T>{
-    data: T | null,
-    message?: string,
-    error?: string
-};
