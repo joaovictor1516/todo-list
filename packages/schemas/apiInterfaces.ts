@@ -6,7 +6,7 @@ export interface service<T>{
 
 export interface repository<T>{
     getAll(): Promise<T[]>;
-    create(data: T): Promise<void>;
+    create(data: T): Promise<T>;
     delete(id: string): Promise<void>;
-    update(id: string, data: T): Promise<void>;
+    update(id: string, data: T): Promise<T>;
 }
