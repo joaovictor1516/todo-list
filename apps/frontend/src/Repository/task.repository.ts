@@ -1,8 +1,8 @@
 import { getTasksApi, createTaskApi, updateTaskApi, deleteTaskApi } from "../api/task.api";
 import type { TaskInterface } from "../../../../packages/schemas/taskInterfaces";
-import type { repository } from "../../../../packages/schemas/apiInterfaces";
+import type { taskRepository } from "../../../../packages/schemas/apiInterfaces";
 
-export class OffLineTaskRepository implements repository<TaskInterface> {
+export class OffLineTaskRepository implements taskRepository{
     async getAll(): Promise<TaskInterface[]> {
         const tasks = localStorage.getItem("tasks");
         return tasks ? JSON.parse(tasks) : [];
@@ -30,7 +30,7 @@ export class OffLineTaskRepository implements repository<TaskInterface> {
     }
 }
 
-export class OnLineTaskRepository implements repository<TaskInterface>{
+export class OnLineTaskRepository implements taskRepository{
     async getAll():Promise<TaskInterface[]>{
         return getTasksApi();
     }
