@@ -19,6 +19,7 @@ export interface taskRepository extends baseRepository<TaskInterface> {
 
 export interface userRepository{
     getMe(): Promise<UserInterface>;
+    getAllMyTasks(): Promise<TaskInterface[]>
     update(data: Partial<UserInterface>): Promise<UserInterface>;
-    updatePassword(currentPassword: string, newPassword: string): Promise<string>;
+    updatePassword(currentPassword: UserInterface["id"], newPassword: UserInterface["id"]): Promise<void>;
 }
