@@ -6,11 +6,11 @@ const buttonStyle = tv({
     variants: {
         colors: {
             primary: "text-gren-500 hover:bg-gren-500",
-            secubdary: "text-red-500  hover:bg-gren500"
+            secubdary: "text-red-500  hover:bg-gren-500"
         },
         size: {
-            default: "",
-            big : ""
+            default: "py-2",
+            big: "w-full h-11"
         }
     },
     defaultVariants: {
