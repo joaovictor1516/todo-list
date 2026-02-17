@@ -5,7 +5,7 @@ export const userType = z.object({
     id: z.uuid(),
     name: z.string(),
     email: z.email(),
-    points: z.number(),
+    points: z.number().nullish(),
     todoList: z.array(taskType),
     authState: z.boolean(),
     authCode: z.string().optional()
