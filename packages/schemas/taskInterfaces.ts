@@ -6,6 +6,8 @@ export const taskType = z.object({
     content: z.string().min(5),
     createdAt: z.string().nullish(),
     eventDate: z.date().nullish(),
+    priority: z.enum(["low", "medium", "high"]).nullish(),
+    tags: z.string().array().nullish,
     isCompleted: z.boolean()
 });
 
