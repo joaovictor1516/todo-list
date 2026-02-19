@@ -5,7 +5,11 @@ const envSchema = z.object({
     API_BASE_URL: z.url(),
     WEB_BASE_URL: z.url(),
     DATA_BASE: z.url(),
-    PORT: z.number()
+    PORT: z.number(),
+    DATABASE_PORT: z.number(),
+    DATABASE_PASSWORLD: z.string(),
+    DATABASE_NAME: z.string(),
+    DATABASE_USER: z.string()
 });
 
 export const env = envSchema.parse(process.env);
