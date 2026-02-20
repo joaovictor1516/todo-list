@@ -34,6 +34,6 @@ export class TaskRepository {
     async deleteTask(id: string): Promise<boolean> {
         const task = await pool.query("DELETE FROM tasks WHERE task_id = $1", [id]);
         
-        return (task.rowCount ?? 0) > 1;
+        return (task.rowCount ?? 0) > 0;
     }
 }
