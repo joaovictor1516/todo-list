@@ -3,7 +3,8 @@ import { z } from "zod";
 
 export const userType = z.object({
     id: z.uuid(),
-    name: z.string(),
+    name: z.string().min(3),
+    password: z.string(),
     email: z.email(),
     points: z.number().nullish(),
     todoList: z.array(taskType),
