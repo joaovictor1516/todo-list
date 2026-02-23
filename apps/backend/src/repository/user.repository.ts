@@ -20,6 +20,12 @@ export class USerRepository{
         return user.rows[0];
     }
 
+    async getUserByEmail(email: string): Promise<UserInterface> {
+        const user = await pool.query("SELECT * FROM users WHERE user_email = $1", [email]);
+
+        return user.rows[0];
+    }
+
     async updateUser(id: string, user: UserInterface):Promise<UserInterface>{
         const userUpdated = await pool.query("UPDATE users SET user_email = $2, user_name = $3, user_points = $4 WHERE user_id = $1 RETURNING *", [id, user.email, user.name, user.points]);
 
