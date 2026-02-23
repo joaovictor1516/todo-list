@@ -1,7 +1,7 @@
 import { UserInterface } from "../../../../packages/schemas/userInterfaces";
 import { pool } from "../database";
 
-export class USerRepository{
+export class UserRepository{
     async createUser(user: UserInterface):Promise<UserInterface>{
         const newUser = await pool.query("INSERT INTO users (user_id, user_email, user_name, user_points) VALUES ($1, $2, $3, $4) RETURNING *", [user.id, user.email, user.name, user.points]);
 
@@ -20,7 +20,7 @@ export class USerRepository{
         return user.rows[0];
     }
 
-    async getUserByEmail(email: string): Promise<UserInterface> {
+    async getUserByEmail(email: string): Promise<UserInterface>{
         const user = await pool.query("SELECT * FROM users WHERE user_email = $1", [email]);
 
         return user.rows[0];
