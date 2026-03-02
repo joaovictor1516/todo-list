@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const userPublicDto = z.object({
+const userPublic = z.object({
     id: z.uuid(),
     name: z.string().min(3),
     email: z.email(),
@@ -8,13 +8,18 @@ export const userPublicDto = z.object({
     createdAt: z.date()
 });
 
-export const userInputsDto = z.object({
+const userInput = z.object({
     name: z.string().min(3),
     password: z.string().min(8),
     email: z.email()
 });
 
-export const userDbDto = z.object({
+const userLogin = z.object({
+    email: z.email(),
+    password: z.string().min(8)
+});
+
+const userDb = z.object({
     id: z.uuid(),
     name: z.string().min(3),
     email: z.email(),
@@ -23,8 +28,11 @@ export const userDbDto = z.object({
     createdAt: z.date()
 });
 
-export type UserInterface = z.infer<typeof userPublicDto>
+export type UserInterface = z.infer<typeof userPublic>;
+export type UserInputDto = z.infer<typeof userInput>;
+export type UserLoginDto = z.infer<typeof userLogin>;
+export type UserDbDto = z.infer<typeof userDb>
 
 export interface NewUserInterface{
- newUser: (data: typeof userInputsDto) => void; 
+ newUser: (data: UserInputDto) => void; 
 };
