@@ -15,7 +15,6 @@ const taskInput = z.object({
     content: z.string().min(5),
     eventDate: z.date().nullish(),
     priority: z.enum(["low", "medium", "high"]).default("low"),
-    iscompleted: z.boolean().default(false)
 });
 
 const taskDb = z.object({
