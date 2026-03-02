@@ -1,6 +1,6 @@
 import z from "zod";
 
-const taskPublic = z.object({
+export const taskPublic = z.object({
     id: z.uuid(),
     title: z.string().min(3),
     content: z.string().min(5),
