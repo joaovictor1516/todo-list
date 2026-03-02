@@ -1,6 +1,6 @@
 import z from "zod";
 
-export const taskPublicDto = z.object({
+const taskPublic = z.object({
     id: z.uuid(),
     title: z.string().min(3),
     content: z.string().min(5),
@@ -10,7 +10,7 @@ export const taskPublicDto = z.object({
     isCompleted: z.boolean().default(false)
 });
 
-export const taskInputDto = z.object({
+const taskInput = z.object({
     title: z.string().min(3),
     content: z.string().min(5),
     eventDate: z.date().nullish(),
@@ -18,7 +18,14 @@ export const taskInputDto = z.object({
     iscompleted: z.boolean().default(false)
 });
 
-export type TaskInterface = z.infer<typeof taskPublicDto>;
+const taskDb = z.object({
+    id: z.uuid,
+    title: z.string().min(5)
+});
+
+export type TaskInterface = z.infer<typeof taskPublic>;
+export type TaskInputDto = z.infer<typeof taskInput>;
+export type TaskDbDto = z.infer<typeof taskDb>;
 
 export interface TaskProps extends TaskInterface{
     deleteTask?: (taskId: TaskInterface["id"]) => void;
@@ -27,5 +34,5 @@ export interface TaskProps extends TaskInterface{
 };
 
 export interface NewTaskInterface{
-    createTask: (data: typeof taskInputDto) => void;
+    createTask: (data: TaskInputDto) => void;
 };
