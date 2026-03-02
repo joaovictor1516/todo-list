@@ -1,32 +1,32 @@
-import { UserInterface } from "../../../../packages/schemas/userInterfaces";
+import { UserDbDto } from "../../../../packages/schemas/userInterfaces";
 import { pool } from "../database";
 
 export class UserRepository{
-    async createUser(user: UserInterface):Promise<UserInterface>{
+    async createUser(user: UserDbDto):Promise<UserDbDto>{
         const newUser = await pool.query("INSERT INTO users (user_id, user_email, user_name, user_points) VALUES ($1, $2, $3, $4) RETURNING *", [user.id, user.email, user.name, user.points]);
 
         return newUser.rows[0];
     }
 
-    async getUsers():Promise<UserInterface[]>{
+    async getUsers():Promise<UserDbDto[]>{
         const users = await pool.query("SELECT * FROM users");
 
         return users.rows;
     }
 
-    async getUserById(id: string):Promise<UserInterface>{
+    async getUserById(id: string):Promise<UserDbDto>{
         const user = await pool.query("SELECT * FROM users WHERE user_id = $1", [id]);
 
         return user.rows[0];
     }
 
-    async getUserByEmail(email: string): Promise<UserInterface>{
+    async getUserByEmail(email: string): Promise<UserDbDto>{
         const user = await pool.query("SELECT * FROM users WHERE user_email = $1", [email]);
 
         return user.rows[0];
     }
 
-    async updateUser(id: string, user: UserInterface):Promise<UserInterface>{
+    async updateUser(id: string, user: UserDbDto):Promise<UserDbDto>{
         const userUpdated = await pool.query("UPDATE users SET user_email = $2, user_name = $3, user_points = $4 WHERE user_id = $1 RETURNING *", [id, user.email, user.name, user.points]);
 
         return userUpdated.rows[0];
