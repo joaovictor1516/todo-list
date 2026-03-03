@@ -18,8 +18,13 @@ const taskInput = z.object({
 });
 
 const taskDb = z.object({
-    id: z.uuid,
-    title: z.string().min(5)
+    id: z.uuid(),
+    title: z.string().min(3),
+    content: z.string().min(5),
+    createdAt: z.date(),
+    eventDate: z.date(),
+    priority: z.enum(["low", "medium", "high"]).default("low"),
+    isCompleted: z.boolean().default(false)
 });
 
 export type TaskInterface = z.infer<typeof taskPublic>;
