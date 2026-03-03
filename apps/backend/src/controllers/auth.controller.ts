@@ -5,15 +5,27 @@ import { AuthService } from "../service/auth.service";
 export class AuthController{
     constructor(private authService: AuthService){}
 
-    async authCreateUser(request: FastifyRequest, reply: FastifyReply) {
-        const userTaked = request.body as UserInputDto;
+    async authCreateUser(request: FastifyRequest<
+            {
+                Body: {
+                    user: UserInputDto
+                }
+            }
+        >, reply: FastifyReply) {
+        const userTaked = request.body.user;
         const user = await this.authService.register(userTaked);
 
         reply.code(201).send(user);
     }
 
-    async authLoginUser(request: FastifyRequest, reply: FastifyReply){
-        const loginUserInformations = request.body as UserLoginDto;
+    async authLoginUser(request: FastifyRequest<
+            {
+                Body: {
+                    user: UserLoginDto
+                }
+            }
+        >, reply: FastifyReply){
+        const loginUserInformations = request.body.user;
         const user = await this.authService.login(loginUserInformations);
 
         reply.code(200).send(user);
