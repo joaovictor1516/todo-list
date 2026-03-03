@@ -4,8 +4,8 @@ import { pool } from "../database";
 //Lembrar que todas as checagens de igualdade entre ID's sera feita no service!!!
 export class TaskRepository {
     async createTask(task: TaskInterface): Promise<TaskInterface> {
-        const newTask = await pool.query("INSERT INTO tasks (task_id, task_title, task_content, task_state, task_created_at, task_event_date, task_priority, task_tags)  VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *",
-            [task.id, task.title, task.content, task.isCompleted, task.createdAt, task.eventDate, task.priority, task.tags]
+        const newTask = await pool.query("INSERT INTO tasks (task_id, task_title, task_content, task_state, task_created_at, task_event_date, task_priority)  VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *",
+            [task.id, task.title, task.content, task.isCompleted, task.createdAt, task.eventDate, task.priority]
         );
 
         return newTask.rows[0];
@@ -24,8 +24,8 @@ export class TaskRepository {
     }
 
     async updateTask(id: string, task: TaskInterface): Promise<TaskInterface> {
-        const taskUpdated = await pool.query("UPDATE tasks SET task_title = $2, task_content = $3, task_state = $4, task_event_date = $5, task_priority = $6, task_tags = $7 WHERE task_id = $1 RETURNING *",
-            [id, task.title, task.content, task.isCompleted, task.eventDate, task.priority, task.tags]
+        const taskUpdated = await pool.query("UPDATE tasks SET task_title = $2, task_content = $3, task_state = $4, task_event_date = $5, task_priority = $6 WHERE task_id = $1 RETURNING *",
+            [id, task.title, task.content, task.isCompleted, task.eventDate, task.priority]
         );
 
         return taskUpdated.rows[0];
