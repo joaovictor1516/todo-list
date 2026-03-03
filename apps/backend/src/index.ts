@@ -38,7 +38,7 @@ app.register(fastifyJwt, {
     secret: env.JWT_SECRET
 });
 
-app.register(TaskRoute, { prefix: "tasks" });
+app.register(TaskRoute, { prefix: "/tasks" });
 app.register(AuthRoute, { prefix: "/auth" });
 
 app.setErrorHandler(errorHandler);
