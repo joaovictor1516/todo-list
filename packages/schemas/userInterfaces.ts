@@ -8,13 +8,13 @@ export const userPublic = z.object({
     createdAt: z.date()
 });
 
-const userInput = z.object({
+export const userInput = z.object({
     name: z.string().min(3),
     password: z.string().min(8),
     email: z.email()
 });
 
-const userLogin = z.object({
+export const userLogin = z.object({
     email: z.email(),
     password: z.string().min(8)
 });
