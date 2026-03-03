@@ -1,34 +1,35 @@
-import { userPublic } from "../../../../packages/schemas/userInterfaces";
+import { userPublic, userInput, userLogin } from "../../../../packages/schemas/userInterfaces";
 import { AuthController } from "../controllers/auth.controller";
 import { UserRepository } from "../repository/user.repository";
 import { AuthService } from "../service/auth.service";
 import { typeProvider } from "../index";
-import { z } from "zod";
 
 
-export async function authRoute(app: typeof typeProvider){
+export async function AuthRoute(app: typeof typeProvider){
     const userRepository = new UserRepository();
     const authService = new AuthService(userRepository);
     const authController = new AuthController(authService);
 
-    app.post("/auth",
+    app.post("/register",
         {
-            schema: z.object({
+            schema:{
+                body: userInput,
                 response: {
                     201: userPublic
                 }
-            })
+            }
         },
         authController.authCreateUser
     );
 
-    app.get("", 
+    app.post("/login", 
         {
-            schema: z.object({
+            schema: {
+                body: userLogin,
                 response: {
                     200: userPublic
                 }
-            })
+            }
         },
         authController.authLoginUser
     );
