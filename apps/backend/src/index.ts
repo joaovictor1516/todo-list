@@ -2,6 +2,7 @@ import { jsonSchemaTransform, serializerCompiler, validatorCompiler, ZodTypeProv
 import fastifySwaggerUI from "@fastify/swagger-ui";
 import { errorHandler } from "./libs/errorHandler";
 import { TaskRoute } from "./routes/task.route";
+import { AuthRoute } from "./routes/auth.route";
 import fastifySwagger from "@fastify/swagger";
 import { env } from "./libs/envSchema";
 import fastifyJwt from "@fastify/jwt";
@@ -37,7 +38,8 @@ app.register(fastifyJwt, {
     secret: env.JWT_SECRET
 });
 
-app.register(TaskRoute);
+app.register(TaskRoute, { prefix: "tasks" });
+app.register(AuthRoute, { prefix: "/auth" });
 
 app.setErrorHandler(errorHandler);
 app.setSerializerCompiler(serializerCompiler);
