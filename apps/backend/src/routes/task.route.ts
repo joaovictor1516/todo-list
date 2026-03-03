@@ -4,60 +4,60 @@ import { typeProvider } from "../index";
 import z from "zod";
 
 export async function TaskRoute(app: typeof typeProvider){
-    app.get("/tasks",
+    app.get("/",
         {
-            schema: z.object({
+            schema: {
+                body: taskPublic,
                 response: {
                     200: taskPublic.array()
                }
-            })
+            }
         },
         getTasks
     );
 
-    app.post("/tasks",
+    app.post("/",
         {
-            schema: z.object({
+            schema: {
+                body: taskPublic,
                 response: {
                     201: taskPublic
                 }
-            })
+            }
         },
         createTask 
     );
 
-    app.put("/tasks/:id", 
+    app.put("/:id", 
         {
-            schema: z.object({
+            schema:{
                 params: {
                     id: z.uuid()
                 },
-                body: {
-                    task: taskPublic
-                },
+                body: taskPublic,
                 response: {
                     201: taskPublic
                 }
-            })
+            }
         },
         updateTask
     );
 
-    app.delete("/tasks/:id",
+    app.delete("/:id",
         {
-            schema: z.object({
+            schema: {
                 params: {
                     id: z.uuid()
                 },
                 response: {
                     201: null
                 }
-            })
+            }
         },
         deleteTask
     );
 
-    app.head("/tasks", async (_, reply) => {
+    app.head("/", async (_, reply) => {
         reply.code(200).send();
     });
 }
