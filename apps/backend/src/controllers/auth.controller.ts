@@ -7,12 +7,10 @@ export class AuthController{
 
     async authCreateUser(request: FastifyRequest<
             {
-                Body: {
-                    user: UserInputDto
-                }
+                Body: UserInputDto
             }
         >, reply: FastifyReply) {
-        const userTaked = request.body.user;
+        const userTaked = request.body;
         const user = await this.authService.register(userTaked);
 
         reply.code(201).send(user);
@@ -20,12 +18,10 @@ export class AuthController{
 
     async authLoginUser(request: FastifyRequest<
             {
-                Body: {
-                    user: UserLoginDto
-                }
+                Body: UserLoginDto
             }
         >, reply: FastifyReply){
-        const loginUserInformations = request.body.user;
+        const loginUserInformations = request.body;
         const user = await this.authService.login(loginUserInformations);
 
         reply.code(200).send(user);
