@@ -1,5 +1,5 @@
 import { createTask, getTasks, deleteTask, updateTask } from "../controllers/task.controller";
-import { taskType } from "../../../../packages/schemas/taskInterfaces";
+import { taskPublic } from "../../../../packages/schemas/taskInterfaces";
 import { typeProvider } from "../index";
 import z from "zod";
 
@@ -8,7 +8,7 @@ export async function TaskRoute(app: typeof typeProvider){
         {
             schema: z.object({
                 response: {
-                    200: taskType.array()
+                    200: taskPublic.array()
                }
             })
         },
@@ -19,7 +19,7 @@ export async function TaskRoute(app: typeof typeProvider){
         {
             schema: z.object({
                 response: {
-                    201: taskType
+                    201: taskPublic
                 }
             })
         },
@@ -33,10 +33,10 @@ export async function TaskRoute(app: typeof typeProvider){
                     id: z.uuid()
                 },
                 body: {
-                    task: taskType
+                    task: taskPublic
                 },
                 response: {
-                    201: taskType
+                    201: taskPublic
                 }
             })
         },
