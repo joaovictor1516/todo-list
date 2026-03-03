@@ -4,10 +4,10 @@ import { UserRepository } from "../repository/user.repository";
 import bcrypt from "bcryptjs";
 
 export class AuthService{
+    constructor(private userRepository: UserRepository){}
 
     async register(user: UserInputDto){
-        const userRepository = new UserRepository()
-        const userExist = await userRepository.getUserByEmail(user.email);
+        const userExist = await this.userRepository.getUserByEmail(user.email);
 
         if(userExist !== undefined){
             return "The user alwere exist.";
@@ -24,13 +24,11 @@ export class AuthService{
             createdAt: new Date(),
         };
 
-        return await userRepository.createUser(newUser);
+        return await this.userRepository.createUser(newUser);
     }
 
     async login(user: UserLoginDto){
-        const userRepository = new UserRepository();
-
-        const userDataBase = await userRepository.getUserByEmail(user.email);
+        const userDataBase = await this.userRepository.getUserByEmail(user.email);
 
         if(userDataBase === undefined){
             return "Invalid credentials.";
