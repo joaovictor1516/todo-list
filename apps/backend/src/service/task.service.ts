@@ -8,21 +8,15 @@ export class TaskService{
         return await this.taskRepository.createTask(task);
     }
 
-    async getTask():Promise<TaskDbDto[] | string>{
-        const tasks = await this.taskRepository.getTasks();
-
-        if(tasks === undefined){
-            return "Tasks dont exist.";
-        }
-
-        return tasks
+    async getTasks():Promise<TaskDbDto[]>{
+        return await this.taskRepository.getTasks();
     }
 
-    async getTaskById(id: string):Promise<TaskDbDto | string>{
+    async getTaskById(id: string):Promise<TaskDbDto>{
         const task = await this.taskRepository.getTaskById(id);
 
-        if(task === undefined){
-            return "Task dont exist.";
+        if(!task){
+            throw new Error("Task dont exist.");
         }
 
         return task;
@@ -31,30 +25,36 @@ export class TaskService{
     async updateTask(id: string, task: TaskInterface):Promise<TaskDbDto>{
         const  taskExist =  await  this.taskRepository.getTaskById(id);
 
-        if(taskExist === undefined){
-            return await this.createTask(task);
+        if(!taskExist){
+            throw new Error("Task dont exist.");
+        }
+
+        if (taskExist.isCompleted === true){
+            throw new Error("Task is alwere completed.");
         }
 
         return await this.taskRepository.updateTask(id, task);
     }
 
-    async completTask(id: string):Promise<TaskDbDto | string>{
+    async completTask(id: string):Promise<TaskDbDto>{
         const task = await this.getTaskById(id);
         
-        if(typeof(task) === "string"){
-            return task; 
+        if(!task){
+            throw new Error("Task dont exist.");
         }
 
-        task.isCompleted = true;
+        if(task.isCompleted === true){
+            throw new Error("Task is alwere completed.");
+        }
 
-        return await this.updateTask(id, task);
+        return await this.taskRepository.checkTask(id);
     }
 
-    async deleteTask(id: string): Promise<boolean | string>{
+    async deleteTask(id: string): Promise<boolean>{
         const task = await this.getTaskById(id);
 
-        if(typeof(task) === "string"){
-            return task;
+        if(!task){
+            throw new Error("Task dont exist.");
         }
 
         return await this.taskRepository.deleteTask(id);
