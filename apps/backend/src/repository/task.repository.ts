@@ -17,7 +17,7 @@ export class TaskRepository {
         return tasks.rows;
     }
 
-    async getTaskById(id: string): Promise<TaskDbDto | undefined> {
+    async getTaskById(id: string): Promise<TaskDbDto | null> {
         const task = await pool.query("SELECT * FROM tasks WHERE task_id = $1", [id]);
 
         return task.rows[0];
