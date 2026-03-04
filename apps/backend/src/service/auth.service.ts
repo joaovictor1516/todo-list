@@ -6,7 +6,7 @@ import bcrypt from "bcryptjs";
 export class AuthService{
     constructor(private userRepository: UserRepository){}
 
-    async register(user: UserInputDto){
+    async register(user: UserInputDto):Promise<UserDbDto | string>{
         const userExist = await this.userRepository.getUserByEmail(user.email);
 
         if(userExist !== undefined){
@@ -27,7 +27,7 @@ export class AuthService{
         return await this.userRepository.createUser(newUser);
     }
 
-    async login(user: UserLoginDto){
+    async login(user: UserLoginDto):Promise<UserDbDto | string>{
         const userDataBase = await this.userRepository.getUserByEmail(user.email);
 
         if(userDataBase === undefined){
