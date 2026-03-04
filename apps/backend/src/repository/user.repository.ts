@@ -14,13 +14,13 @@ export class UserRepository{
         return users.rows;
     }
 
-    async getUserById(id: string):Promise<UserDbDto>{
+    async getUserById(id: string):Promise<UserDbDto | null>{
         const user = await pool.query("SELECT * FROM users WHERE user_id = $1", [id]);
 
         return user.rows[0];
     }
 
-    async getUserByEmail(email: string): Promise<UserDbDto>{
+    async getUserByEmail(email: string): Promise<UserDbDto | null>{
         const user = await pool.query("SELECT * FROM users WHERE user_email = $1", [email]);
 
         return user.rows[0];
@@ -30,6 +30,12 @@ export class UserRepository{
         const userUpdated = await pool.query("UPDATE users SET user_email = $2, user_name = $3, user_points = $4 WHERE user_id = $1 RETURNING *", [id, user.email, user.name, user.points]);
 
         return userUpdated.rows[0];
+    }
+
+    async updatePoint(id: string, userNewPoint: number):Promise<UserDbDto>{
+        const userUpdatedPoint = await pool.query("UPDATE users set user_points = $2 WHERE user_id = $1 RETURNING *", [id, userNewPoint]);
+
+        return userUpdatedPoint.rows[0];
     }
 
     async deleteUser(id: string):Promise<boolean>{
