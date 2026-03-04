@@ -6,11 +6,11 @@ import bcrypt from "bcryptjs";
 export class AuthService{
     constructor(private userRepository: UserRepository){}
 
-    async register(user: UserInputDto):Promise<UserDbDto | string>{
+    async register(user: UserInputDto):Promise<UserDbDto>{
         const userExist = await this.userRepository.getUserByEmail(user.email);
 
-        if(userExist !== undefined){
-            return "The user alwere exist.";
+        if(!userExist){
+            throw new Error("The user alwere exist.");
         }
 
         const hashPassword = await bcrypt.hash(user.password, 10);
@@ -27,17 +27,17 @@ export class AuthService{
         return await this.userRepository.createUser(newUser);
     }
 
-    async login(user: UserLoginDto):Promise<UserDbDto | string>{
+    async login(user: UserLoginDto):Promise<UserDbDto>{
         const userDataBase = await this.userRepository.getUserByEmail(user.email);
 
-        if(userDataBase === undefined){
-            return "Invalid credentials.";
+        if(!userDataBase){
+            throw new Error("Invalid credentials.");
         }
         
         const isValid = await bcrypt.compare(user.password, userDataBase.passwordHash);
 
         if(isValid === false){
-            return "Invalid credentials.";
+            throw new Error("Invalid credentials.");
         }
 
         return userDataBase;
