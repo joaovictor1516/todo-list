@@ -3,7 +3,7 @@ import { pool } from "../database";
 
 //Lembrar que todas as checagens de igualdade entre ID's sera feita no service!!!
 export class TaskRepository {
-    async createTask(task: TaskDbDto): Promise<TaskDbDto> {
+    async createTask(task: TaskDbDto):Promise<TaskDbDto> {
         const newTask = await pool.query("INSERT INTO tasks (task_id, task_title, task_content, task_state, task_created_at, task_event_date, task_priority)  VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *",
             [task.id, task.title, task.content, task.isCompleted, task.createdAt, task.eventDate, task.priority]
         );
@@ -11,19 +11,19 @@ export class TaskRepository {
         return newTask.rows[0];
     }
 
-    async getTasks(): Promise<TaskDbDto[]> {
+    async getTasks():Promise<TaskDbDto[]> {
         const tasks = await pool.query("SELECT * FROM tasks");
 
         return tasks.rows;
     }
 
-    async getTaskById(id: string): Promise<TaskDbDto | null> {
+    async getTaskById(id: string):Promise<TaskDbDto | null> {
         const task = await pool.query("SELECT * FROM tasks WHERE task_id = $1", [id]);
 
         return task.rows[0];
     }
 
-    async updateTask(id: string, task: TaskDbDto): Promise<TaskDbDto> {
+    async updateTask(id: string, task: TaskDbDto):Promise<TaskDbDto> {
         const taskUpdated = await pool.query("UPDATE tasks SET task_title = $2, task_content = $3, task_state = $4, task_event_date = $5, task_priority = $6 WHERE task_id = $1 RETURNING *",
             [id, task.title, task.content, task.isCompleted, task.eventDate, task.priority]
         );
@@ -31,7 +31,13 @@ export class TaskRepository {
         return taskUpdated.rows[0];
     }
 
-    async deleteTask(id: string): Promise<boolean> {
+    async checkTask(id: string):Promise<TaskDbDto>{
+        const taskChecked = await pool.query("UPDATE tasks SET task_state = true WHERE task_id = $1 RETURNING *", [id]);
+
+        return taskChecked.rows[0];
+    }
+
+    async deleteTask(id: string):Promise<boolean> {
         const task = await pool.query("DELETE FROM tasks WHERE task_id = $1", [id]);
         
         return (task.rowCount ?? 0) > 0;
