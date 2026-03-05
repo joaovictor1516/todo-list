@@ -6,5 +6,6 @@ CREATE TABLE tasks (
     task_created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, 
     task_event_date TIMESTAMP, 
     task_priority VARCHAR(6) NOT NULL,
-    task_tags TEXT[]
+    user_id UUID,
+    FOREIGN KEY (user_id) REFERENCES users
     );
