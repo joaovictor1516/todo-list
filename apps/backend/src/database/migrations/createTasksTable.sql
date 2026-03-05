@@ -7,5 +7,5 @@ CREATE TABLE tasks (
     task_event_date TIMESTAMP, 
     task_priority VARCHAR(6) NOT NULL,
     user_id UUID,
-    FOREIGN KEY (user_id) REFERENCES users
+    FOREIGN KEY (user_id) NOT NULL REFERENCES users ON DELETE CASCADE
     );
