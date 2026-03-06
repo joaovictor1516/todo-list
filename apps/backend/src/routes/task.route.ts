@@ -47,6 +47,20 @@ export async function TaskRoute(app: typeof typeProvider){
         taskController.updateTask
     );
 
+    app.put("/check/:id", 
+        {
+            schema: {
+                params: {
+                    id: z.uuid()
+                },
+                response: {
+                    201: taskPublic
+                }
+            }
+        },
+        taskController.checkTask
+    );
+
     app.delete("/:id",
         {
             schema: {
