@@ -22,35 +22,16 @@ export class TaskController{
         reply.code(201).send(tasks);
     }
 
-    async deleteTask(request: FastifyRequest<
-        {
-            Params: {
-                id: string
-            }
-        }
-    >, reply: FastifyReply) {
-        const id = request.params.id;
-
-        reply.code(201);
-    }
-
     async getTaskById(request: FastifyRequest<
         {
             Params: {
                 id: string
             }
         }
-    >, reply: FastifyReply) {
+        >, reply: FastifyReply) {
+        const task = await this.taskService.getTaskById(reply.request.id);
 
-        const id = request.params.id;
-        const task = await this.taskService.getTaskById(id);
-
-        if(!task){
-            return reply.code(400).send({message: "Task bot founded."});
-        }
-
-        reply.code(201).send(task);
-
+        return reply.code(201).send(task);
     }
 
     async updateTask(request: FastifyRequest<
@@ -61,14 +42,48 @@ export class TaskController{
         Body: TaskInterface
     }
     >, reply: FastifyReply) {
-
         const id = request.params.id;
-        const task = request.body;
+        const newTaskVersion = request.body;
 
-        if (id !== task.id) {
-            return reply.code(400).send({
+        if (id !== newTaskVersion.id) {
+            return reply.code(404).send({
                 message: "Task not find"
             });
         }
+
+        const task = await this.taskService.updateTask(id, newTaskVersion);
+
+        return reply.code(201).send(task);
+    }
+
+    async checkTask(request: FastifyRequest<
+        {
+            Params: {
+                id: string
+            }
+        }
+        >, reply: FastifyReply){
+        const id = request.params.id;
+
+        const task = await this.taskService.completTask(id);
+
+        return reply.code(201).send(task);
+    }
+
+    async deleteTask(request: FastifyRequest<
+        {
+            Params: {
+                id: string
+            }
+        }
+    >, reply: FastifyReply) {
+
+        const taskWasDeleted = await this.taskService.deleteTask(request.params.id);
+
+        const message = taskWasDeleted ? "Task delete successful." : "Task don't exist.";
+
+        return reply.code(201).send({
+            message
+        });
     }
 }
