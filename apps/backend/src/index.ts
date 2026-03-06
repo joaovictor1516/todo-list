@@ -3,6 +3,7 @@ import fastifySwaggerUI from "@fastify/swagger-ui";
 import { errorHandler } from "./libs/errorHandler";
 import { TaskRoute } from "./routes/task.route";
 import { AuthRoute } from "./routes/auth.route";
+import { UserRoute } from "./routes/user.route";
 import fastifySwagger from "@fastify/swagger";
 import { env } from "./libs/envSchema";
 import fastifyJwt from "@fastify/jwt";
@@ -39,6 +40,7 @@ app.register(fastifyJwt, {
 });
 
 app.register(TaskRoute, { prefix: "/tasks" });
+app.register(UserRoute, { prefix: "/users" });
 app.register(AuthRoute, { prefix: "/auth" });
 
 app.setErrorHandler(errorHandler);
