@@ -1,19 +1,23 @@
-import { createTask, getTasks, deleteTask, updateTask } from "../controllers/task.controller";
 import { taskPublic } from "../../../../packages/schemas/taskInterfaces";
+import { TaskController } from "../controllers/task.controller";
+import { TaskRepository } from "../repository/task.repository";
+import { TaskService } from "../service/task.service";
 import { typeProvider } from "../index";
 import z from "zod";
 
 export async function TaskRoute(app: typeof typeProvider){
+    const taskRepository = new TaskRepository();
+    const taskService = new TaskService(taskRepository);
+    const taskController = new TaskController(taskService);
     app.get("/",
         {
             schema: {
-                body: taskPublic,
                 response: {
                     200: taskPublic.array()
                }
             }
         },
-        getTasks
+        taskController.getTasks
     );
 
     app.post("/",
@@ -25,7 +29,7 @@ export async function TaskRoute(app: typeof typeProvider){
                 }
             }
         },
-        createTask 
+        taskController.createTask 
     );
 
     app.put("/:id", 
@@ -40,7 +44,7 @@ export async function TaskRoute(app: typeof typeProvider){
                 }
             }
         },
-        updateTask
+        taskController.updateTask
     );
 
     app.delete("/:id",
@@ -54,7 +58,7 @@ export async function TaskRoute(app: typeof typeProvider){
                 }
             }
         },
-        deleteTask
+        taskController.deleteTask
     );
 
     app.head("/", async (_, reply) => {
