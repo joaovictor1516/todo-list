@@ -27,7 +27,7 @@ export class UserRepository{
         return user.rows[0];
     }
 
-    async getUserTasks(id: string): Promise<TaskDbDto[] | null>{
+    async getUserTasks(id: string): Promise<TaskDbDto[]>{
         const userTasks = await pool.query("SELECT * FROM tasks WHERE user_id = $1", [id]);
         
         return userTasks.rows;
