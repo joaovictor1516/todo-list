@@ -5,6 +5,7 @@ export const taskPublic = z.object({
     title: z.string().min(3),
     content: z.string().min(5),
     createdAt: z.date(),
+    lastUpdate: z.date(),
     eventDate: z.date(),
     priority: z.enum(["low", "medium", "high"]).default("low"),
     isCompleted: z.boolean().default(false)
@@ -22,6 +23,7 @@ const taskDb = z.object({
     title: z.string().min(3),
     content: z.string().min(5),
     createdAt: z.date(),
+    lastUpdate: z.date(),
     eventDate: z.date(),
     priority: z.enum(["low", "medium", "high"]).default("low"),
     isCompleted: z.boolean().default(false)
