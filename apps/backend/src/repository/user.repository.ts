@@ -1,4 +1,4 @@
-import { UserDbDto } from "../../../../packages/schemas/userInterfaces";
+import { UserDbDto, UserInputDto } from "../../../../packages/schemas/userInterfaces";
 import { TaskDbDto } from "../../../../packages/schemas/taskInterfaces";
 import { pool } from "../database";
 
@@ -33,8 +33,8 @@ export class UserRepository{
         return userTasks.rows;
     }
 
-    async updateUser(id: string, user: UserDbDto):Promise<UserDbDto>{
-        const userUpdated = await pool.query("UPDATE users SET user_email = $2, user_name = $3, user_points = $4 WHERE user_id = $1 RETURNING *", [id, user.email, user.name, user.points]);
+    async updateUser(id: string, user: UserInputDto):Promise<UserDbDto>{
+        const userUpdated = await pool.query("UPDATE users SET user_email = $2, user_name = $3 WHERE user_id = $1 RETURNING *", [id, user.email, user.name]);
 
         return userUpdated.rows[0];
     }
