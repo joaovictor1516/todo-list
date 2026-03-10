@@ -1,4 +1,4 @@
-import { UserDbDto } from "../../../../packages/schemas/userInterfaces";
+import { UserDbDto, UserInputDto } from "../../../../packages/schemas/userInterfaces";
 import { TaskDbDto } from "../../../../packages/schemas/taskInterfaces";
 import { UserRepository } from "../repository/user.repository";
 
@@ -21,5 +21,12 @@ export class UserService{
         const userTasks= await this.userRepository.getUserTasks(id);
 
         return userTasks;
+    }
+
+    async userUpdate(id: string, user: UserInputDto): Promise<UserDbDto>{
+        await this.getUserInformations(id);
+        const userUpdated = await this.userUpdate(id, user);
+
+        return userUpdated;
     }
 }
