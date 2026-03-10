@@ -1,7 +1,9 @@
+import { userInput, userPublic } from "../../../../packages/schemas/userInterfaces";
 import { UserController } from "../controllers/user.controller";
 import { UserRepository } from "../repository/user.repository";
 import { UserService } from "../service/user.service";
 import { typeProvider } from "../index";
+import { z } from "zod";
 
 export async function UserRoute(app: typeof typeProvider){
     const userRepository = new UserRepository();
@@ -11,7 +13,7 @@ export async function UserRoute(app: typeof typeProvider){
     app.get("/me", {
         schema: {
             response: {
-                200: userController
+                200: userPublic
                 }
             }
         }, 
@@ -21,10 +23,24 @@ export async function UserRoute(app: typeof typeProvider){
     app.get("/me/tasks", {
         schema: {
             response: {
-                200: UserController
+                200: userPublic
                 }
             }
         },
         userController.getUserTasks
+    );
+
+    app.put("/me", {
+        schema: {
+            params: {
+                id: z.uuid()
+                },
+            body: userInput,
+            response: {
+                201: userPublic
+                }
+            }
+        }, 
+        userController.updateUser
     );
 }
