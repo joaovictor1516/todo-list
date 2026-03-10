@@ -43,4 +43,18 @@ export async function UserRoute(app: typeof typeProvider){
         }, 
         userController.updateUser
     );
+
+    app.put("/me/points", {
+        schema: {
+            params: {
+                id: z.uuid()
+                },
+            body: z.number(),
+            response: {
+                201: userPublic
+                }
+            }
+        },
+        userController.updateUserPoint
+    );
 }

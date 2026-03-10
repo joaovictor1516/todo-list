@@ -23,10 +23,20 @@ export class UserService{
         return userTasks;
     }
 
-    async userUpdate(id: string, user: UserInputDto): Promise<UserDbDto>{
+    async updateUser(id: string, user: UserInputDto): Promise<UserDbDto>{
         await this.getUserInformations(id);
-        const userUpdated = await this.userUpdate(id, user);
+        const userUpdated = await this.userRepository.updateUser(id, user);
 
         return userUpdated;
+    }
+
+    async updateUserPoint(id: string, pointsEarned: number): Promise<UserDbDto>{
+        const user = await this.getUserInformations(id);
+
+        const userNewPoint = user.points + pointsEarned;
+
+        const userUpdatedPoint = await this.userRepository.updatePoint(id, userNewPoint);
+
+        return userUpdatedPoint;
     }
 }

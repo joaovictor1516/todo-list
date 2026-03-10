@@ -42,8 +42,24 @@ export class UserController {
         >, reply: FastifyReply){
             const id = request.params.id;
             const userInformations = request.body;
-            const userUpdated = await this.userService.userUpdate(id, userInformations);
+            const userUpdated = await this.userService.updateUser(id, userInformations);
 
             return reply.code(201).send(userUpdated);
+        }
+
+    async updateUserPoint(request: FastifyRequest<
+            {
+                Body: number,
+                Params: {
+                    id: string
+                }
+            }
+        >, reply: FastifyReply){
+            const id = request.params.id;
+            const pointsEarned = request.body;
+
+            const userPointsUpdated = await this.userService.updateUserPoint(id, pointsEarned);
+
+            return reply.code(201).send(userPointsUpdated);
         }
 }
