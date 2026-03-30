@@ -1,7 +1,4 @@
-import { jest } from "@jest/globals";
-
-export const userREpositoryMocl = () => ({
+export const userRepositoryMock = () => ({
     findByEmail: jest.fn(),
-    findByid: jest.fn(),
-    create: jest.fn(),
+    findById: jest.fn(),
 });
