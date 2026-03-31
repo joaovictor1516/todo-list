@@ -8,7 +8,7 @@
   "main": "index.js",
   "repository": "github.com/joaovictor1516/todo-list",
   "scripts": {
-    "dev": "tsx --watch src/index.ts",
+    "dev": "tsx --watch --env-file=src/.env src/index.ts",
     "test": "jest"
   },
   "devDependencies": {
