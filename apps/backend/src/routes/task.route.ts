@@ -3,7 +3,7 @@ import { TaskController } from "../controllers/task.controller";
 import { TaskRepository } from "../repository/task.repository";
 import { TaskService } from "../service/task.service";
 import { typeProvider } from "../index";
-import z from "zod";
+import { z } from "zod";
 
 export async function TaskRoute(app: typeof typeProvider){
     const taskRepository = new TaskRepository();
@@ -17,7 +17,7 @@ export async function TaskRoute(app: typeof typeProvider){
                }
             }
         },
-        taskController.getTasks
+        taskController.getTasks.bind(taskController)
     );
 
     app.post("/",
@@ -29,53 +29,51 @@ export async function TaskRoute(app: typeof typeProvider){
                 }
             }
         },
-        taskController.createTask 
+        taskController.createTask.bind(taskController)
     );
 
     app.put("/:id", 
         {
             schema:{
-                params: {
+                params: z.object({
                     id: z.uuid()
-                },
+                }),
                 body: taskPublic,
                 response: {
-                    201: taskPublic
+                    200: taskPublic
                 }
             }
         },
-        taskController.updateTask
+        taskController.updateTask.bind(taskController)
     );
 
     app.put("/check/:id", 
         {
             schema: {
-                params: {
+                params: z.object({
                     id: z.uuid()
-                },
+                }),
                 response: {
-                    201: taskPublic
+                    200: taskPublic
                 }
             }
         },
-        taskController.checkTask
+        taskController.checkTask.bind(taskController)
     );
 
     app.delete("/:id",
         {
             schema: {
-                params: {
+                params: z.object({
                     id: z.uuid()
-                },
+                }),
                 response: {
-                    201: null
+                    200: z.object({
+                        message: z.string
+                    })
                 }
             }
         },
-        taskController.deleteTask
+        taskController.deleteTask.bind(taskController)
     );
-
-    app.head("/", async (_, reply) => {
-        reply.code(200).send();
-    });
 }
