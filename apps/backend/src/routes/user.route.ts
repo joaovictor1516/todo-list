@@ -17,7 +17,7 @@ export async function UserRoute(app: typeof typeProvider){
                 }
             }
         }, 
-    userController.getUserInformations
+    userController.getUserInformations.bind(userController)
     );
     
     app.get("/me/tasks", {
@@ -27,7 +27,7 @@ export async function UserRoute(app: typeof typeProvider){
                 }
             }
         },
-        userController.getUserTasks
+        userController.getUserTasks.bind(userController)
     );
 
     app.put("/me", {
@@ -37,11 +37,11 @@ export async function UserRoute(app: typeof typeProvider){
                 },
             body: userInput,
             response: {
-                201: userPublic
+                200: userPublic
                 }
             }
         }, 
-        userController.updateUser
+        userController.updateUser.bind(userController)
     );
 
     app.put("/me/points", {
@@ -51,10 +51,10 @@ export async function UserRoute(app: typeof typeProvider){
                 },
             body: z.number(),
             response: {
-                201: userPublic
+                200: userPublic
                 }
             }
         },
-        userController.updateUserPoint
+        userController.updateUserPoint.bind(userController)
     );
 }

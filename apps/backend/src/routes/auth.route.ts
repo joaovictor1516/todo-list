@@ -19,7 +19,7 @@ export async function AuthRoute(app: typeof typeProvider){
                 }
             }
         },
-        authController.authCreateUser
+        authController.authCreateUser.bind(authController)
     );
 
     app.post("/login", 
@@ -31,6 +31,6 @@ export async function AuthRoute(app: typeof typeProvider){
                 }
             }
         },
-        authController.authLoginUser
+        authController.authLoginUser.bind(authController)
     );
 }
