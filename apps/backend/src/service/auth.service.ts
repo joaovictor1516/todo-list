@@ -1,6 +1,6 @@
-import { randomUUID } from "crypto";
 import { UserDbDto, UserLoginDto, UserInputDto } from "../../../../packages/schemas/userInterfaces";
 import { UserRepository } from "../repository/user.repository";
+import { randomUUID } from "crypto";
 import bcrypt from "bcryptjs";
 
 export class AuthService{
@@ -9,7 +9,7 @@ export class AuthService{
     async register(user: UserInputDto):Promise<UserDbDto>{
         const userExist = await this.userRepository.getUserByEmail(user.email);
 
-        if(!userExist){
+        if(userExist){
             throw new Error("The user alwere exist.");
         }
 
