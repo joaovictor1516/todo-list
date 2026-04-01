@@ -19,7 +19,7 @@ export class TaskController{
     async getTasks(request: FastifyRequest, reply: FastifyReply) {
         const tasks = await this.taskService.getTasks();
 
-        reply.code(201).send(tasks);
+        reply.code(200).send(tasks);
     }
 
     async getTaskById(request: FastifyRequest<
@@ -31,7 +31,7 @@ export class TaskController{
         >, reply: FastifyReply) {
         const task = await this.taskService.getTaskById(reply.request.id);
 
-        return reply.code(201).send(task);
+        return reply.code(200).send(task);
     }
 
     async updateTask(request: FastifyRequest<
@@ -53,7 +53,7 @@ export class TaskController{
 
         const task = await this.taskService.updateTask(id, newTaskVersion);
 
-        return reply.code(201).send(task);
+        return reply.code(200).send(task);
     }
 
     async checkTask(request: FastifyRequest<
@@ -67,7 +67,7 @@ export class TaskController{
 
         const task = await this.taskService.completTask(id);
 
-        return reply.code(201).send(task);
+        return reply.code(200).send(task);
     }
 
     async deleteTask(request: FastifyRequest<
@@ -82,7 +82,7 @@ export class TaskController{
 
         const message = taskWasDeleted ? "Task delete successful." : "Task don't exist.";
 
-        return reply.code(201).send({
+        return reply.code(200).send({
             message
         });
     }
