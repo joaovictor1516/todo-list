@@ -23,7 +23,7 @@ export class TaskService{
     }
 
     async updateTask(id: string, task: TaskInterface):Promise<TaskDbDto>{
-        const  taskExist =  await  this.taskRepository.getTaskById(id);
+        const  taskExist =  await this.getTaskById(id);
 
         if(!taskExist){
             throw new Error("Task dont exist.");
