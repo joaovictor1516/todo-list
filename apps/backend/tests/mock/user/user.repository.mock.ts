@@ -3,7 +3,7 @@ import { TaskDbDto } from "../../../../../packages/schemas/taskInterfaces";
 import { jest } from "@jest/globals";
 
 interface UserRepositoryMockInterface {
-    getUserTasks: (id: string) => Promise<TaskDbDto | null>;
+    getUserTasks: (id: string) => Promise<TaskDbDto[] | null>;
     getUserById: (id: string) => Promise<UserDbDto | null>;
 };
 
