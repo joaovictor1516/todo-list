@@ -16,7 +16,7 @@ describe("User service tests.", () => {
         createdAt: date
     });
 
-    repository.getUserTasks.mockResolvedValue({
+    repository.getUserTasks.mockResolvedValue([{
         id: "1",
         title: "Estudar Node.JS",
         content: "Estudar bibliotecas usadas para subir migrations do banco de dados.",
@@ -25,7 +25,7 @@ describe("User service tests.", () => {
         eventDate: date,
         priority: "high",
         isCompleted: false
-    });
+    }]);
 
     const service = new UserService(repository as any);
 
