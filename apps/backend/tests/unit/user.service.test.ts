@@ -45,7 +45,7 @@ describe("User service tests.", () => {
     test("Get user tasks:", async () => {
         const result = await service.getUserTasks("1");
 
-        expect(result).toEqual({
+        expect(result).toEqual([{
             id: "1",
             title: "Estudar Node.JS",
             content: "Estudar bibliotecas usadas para subir migrations do banco de dados.",
@@ -54,7 +54,7 @@ describe("User service tests.", () => {
             eventDate: date,
             priority: "high",
             isCompleted: false
-        });
+        }]);
     });
 
     test("User not founded.", async () => {
