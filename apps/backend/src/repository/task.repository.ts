@@ -1,7 +1,6 @@
 import { TaskDbDto } from "../../../../packages/schemas/taskInterfaces";
 import { pool } from "../database";
 
-//Lembrar que todas as checagens de igualdade entre ID's sera feita no service!!!
 export class TaskRepository {
     async createTask(task: TaskDbDto):Promise<TaskDbDto> {
         const newTask = await pool.query("INSERT INTO tasks (task_id, task_title, task_content, task_state, task_created_at, task_event_date, task_priority)  VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *",
