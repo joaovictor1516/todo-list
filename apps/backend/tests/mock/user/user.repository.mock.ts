@@ -1,13 +1,13 @@
-import { UserDbDto } from "../../../../../packages/schemas/userInterfaces";
-import { TaskDbDto } from "../../../../../packages/schemas/taskInterfaces";
+import { UserRepository } from "../../../src/repository/user.repository";
 import { jest } from "@jest/globals";
 
-interface UserRepositoryMockInterface {
-    getUserTasks: (id: string) => Promise<TaskDbDto[] | null>;
-    getUserById: (id: string) => Promise<UserDbDto | null>;
-};
-
-export const userRepositoryMock = (): jest.Mocked<UserRepositoryMockInterface> => ({
+export const userRepositoryMock = (): jest.Mocked<UserRepository> => ({
+    getUserByEmail: jest.fn(),
     getUserTasks: jest.fn(),
     getUserById: jest.fn(),
+    updatePoint: jest.fn(),
+    createUser: jest.fn(),
+    updateUser: jest.fn(),
+    deleteUser: jest.fn(),
+    getUsers: jest.fn()
 });
