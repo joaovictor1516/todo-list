@@ -24,11 +24,7 @@ export class TaskService{
 
     async updateTask(id: string, task: TaskInterface):Promise<TaskDbDto>{
         const  taskExist =  await this.getTaskById(id);
-
-        if(!taskExist){
-            throw new Error("Task dont exist.");
-        }
-
+        
         if (taskExist.isCompleted === true){
             throw new Error("Task is alwere completed.");
         }
@@ -38,10 +34,6 @@ export class TaskService{
 
     async completTask(id: string):Promise<TaskDbDto>{
         const task = await this.getTaskById(id);
-        
-        if(!task){
-            throw new Error("Task dont exist.");
-        }
 
         if(task.isCompleted === true){
             throw new Error("Task is alwere completed.");
@@ -53,10 +45,6 @@ export class TaskService{
     async deleteTask(id: string): Promise<boolean>{
         const task = await this.getTaskById(id);
 
-        if(!task){
-            throw new Error("Task dont exist.");
-        }
-
-        return await this.taskRepository.deleteTask(id);
+        return await this.taskRepository.deleteTask(task.id);
     }
 }
