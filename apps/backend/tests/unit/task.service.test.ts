@@ -9,7 +9,7 @@ describe("Task service tests:", () => {
 
     beforeEach(() => {
         repository = taskRepositoryMock();
-        service = new TaskService(repository as TaskRepository);
+        service = new TaskService(repository);
     });
 
     test("Create new task test:", async () => {
@@ -38,6 +38,18 @@ describe("Task service tests:", () => {
         });
 
         expect(result).toEqual({
+            id: "1",
+            title: "Ir para a academia",
+            content: "Criar vergonha na cara e melhorar a saude.",
+            createdAt: date,
+            lastUpdate: date,
+            eventDate: date,
+            priority: "medium",
+            isCompleted: false
+        });
+
+        expect(repository.createTask)
+            .toHaveBeenCalledWith({
             id: "1",
             title: "Ir para a academia",
             content: "Criar vergonha na cara e melhorar a saude.",
@@ -94,6 +106,9 @@ describe("Task service tests:", () => {
             priority: "medium",
             isCompleted: false
         }]);
+
+        expect(repository.getTasks)
+            .toHaveBeenCalled();
     });
 
     test("Get a task using id:", async () => { 
@@ -122,12 +137,64 @@ describe("Task service tests:", () => {
             priority: "medium",
             isCompleted: false
         });
+
+        expect(repository.getTaskById)
+            .toHaveBeenCalledWith("2");
     });
 
     test("Try to get a not exist task:", async () => {
         await expect(service.getTaskById("3"))
             .rejects
             .toThrow("Task dont exist.");
+
+        expect(repository.getTaskById)
+            .toHaveBeenCalledWith("3");
+            
+    });
+
+    test("Complete a task test:", async () => {
+        const date = new Date();
+
+        repository.getTaskById.mockResolvedValue({
+            id: "1",
+            title: "Ir para a academia",
+            content: "Criar vergonha na cara e melhorar a saude.",
+            createdAt: date,
+            lastUpdate: date,
+            eventDate: date,
+            priority: "medium",
+            isCompleted: false
+        });
+
+        repository.checkTask.mockResolvedValue({
+            id: "1",
+            title: "Ir para a academia",
+            content: "Criar vergonha na cara e melhorar a saude.",
+            createdAt: date,
+            lastUpdate: date,
+            eventDate: date,
+            priority: "medium",
+            isCompleted: true
+        });
+
+        const result = await service.completTask("1");
+
+        expect(result).toEqual({
+            id: "1",
+            title: "Ir para a academia",
+            content: "Criar vergonha na cara e melhorar a saude.",
+            createdAt: date,
+            lastUpdate: date,
+            eventDate: date,
+            priority: "medium",
+            isCompleted: true
+        });
+
+        expect(repository.getTaskById)
+            .toHaveBeenCalledWith("1");
+        
+        expect(repository.checkTask)
+            .toHaveBeenCalledWith("1");
     });
 
     test("Try to check a task checked:", async () => {
@@ -147,5 +214,72 @@ describe("Task service tests:", () => {
         await expect(service.completTask("1"))
             .rejects
             .toThrow("Task is alwere completed.");
+
+        expect(repository.getTaskById)
+            .toHaveBeenCalledWith("1");
+    });
+
+    test("Update a task test:", async () => {
+        const date = new Date();
+        const newDate = new Date();
+
+        repository.getTaskById.mockResolvedValue({
+            id: "1",
+            title: "Ir para a academia",
+            content: "Criar vergonha na cara e melhorar a saude.",
+            createdAt: date,
+            lastUpdate: date,
+            eventDate: date,
+            priority: "medium",
+            isCompleted: false
+        });
+
+        repository.updateTask.mockResolvedValue({
+            id: "1",
+            title: "Estudar React",
+            content: "Praticar mais o desenvolvimento do front de um projeto!!",
+            createdAt: date,
+            lastUpdate: newDate,
+            eventDate: date,
+            priority: "medium",
+            isCompleted: false
+        });
+
+        const result = await service.updateTask("1", {
+            id: "1",
+            title: "Estudar React",
+            content: "Praticar mais o desenvolvimento do front de um projeto!!",
+            createdAt: date,
+            lastUpdate: date,
+            eventDate: date,
+            priority: "medium",
+            isCompleted: false
+        });
+
+        expect(result).toEqual({
+            id: "1",
+            title: "Estudar React",
+            content: "Praticar mais o desenvolvimento do front de um projeto!!",
+            createdAt: date,
+            lastUpdate: newDate,
+            eventDate: date,
+            priority: "medium",
+            isCompleted: false
+        });
+
+        expect(repository.getTaskById)
+            .toHaveBeenCalledWith("1");
+
+        expect(repository.updateTask)
+            .toHaveBeenCalledWith("1", {
+                id: "1",
+                title: "Estudar React",
+                content: "Praticar mais o desenvolvimento do front de um projeto!!",
+                createdAt: date,
+                lastUpdate: newDate,
+                eventDate: date,
+                priority: "medium",
+                isCompleted: false
+            });
     });
 });
