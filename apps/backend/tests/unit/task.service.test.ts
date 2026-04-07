@@ -282,4 +282,44 @@ describe("Task service tests:", () => {
                 isCompleted: false
             });
     });
+
+    test("Delete a task test:", async () => {
+        const date = new Date();
+
+        repository.getTaskById.mockResolvedValue({
+            id: "1",
+            title: "Estudar React",
+            content: "Praticar mais o desenvolvimento do front de um projeto!!",
+            createdAt: date,
+            lastUpdate: date,
+            eventDate: date,
+            priority: "medium",
+            isCompleted: false
+        });
+
+        repository.deleteTask.mockResolvedValue(true);
+
+        const result = await service.deleteTask("1");
+
+        expect(result).toEqual(true);
+
+        expect(repository.getTaskById)
+            .toHaveBeenCalledWith("1");
+
+        expect(repository.deleteTask)
+            .toHaveBeenCalledWith("1");
+    });
+
+    test("try to delete a not existent task:", async () => {
+        repository.getTaskById.mockResolvedValue(null);
+
+        const result = service.deleteTask("1");
+
+        await expect(result)
+            .rejects
+            .toThrow("Task dont exist.");
+
+        expect(repository.getTaskById)
+            .toHaveBeenCalledWith("1");
+    });
 });
