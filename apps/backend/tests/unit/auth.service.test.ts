@@ -131,7 +131,7 @@ describe("Auth service tests:", () => {
             .toHaveBeenCalledWith("jvcampos531@gmail.com");
     });
 
-    test("Try to make login with wrong password", async () => {
+    test("Try to make login with wrong password:", async () => {
         const password = "Teste@1234";
         const correctPassword = "TEste@1234";
         const correctPasswordHash = await bcrypt.hash(correctPassword, 10);
@@ -157,5 +157,72 @@ describe("Auth service tests:", () => {
 
         expect(repository.getUserByEmail)
             .toHaveBeenCalledWith("jvcampos531@gmail.com");
+    });
+
+    test("Delete user test:", async () => {
+        const password = "Teste@1234";
+        const passwordHash = await bcrypt.hash(password, 10);
+        const date = new Date();
+
+        repository.getUserById.mockResolvedValue({
+            id: "1",
+            name: "Joao Victor",
+            email: "jvcampos531@gmail.com",
+            passwordHash: passwordHash,
+            points: 0,
+            createdAt: date
+        });
+
+        repository.deleteUser.mockResolvedValue(true);
+
+        const result = await service.delete("1", password);
+
+        expect(result).toEqual(true);
+
+        expect(repository.getUserById)
+            .toHaveBeenCalledWith("1");
+
+        expect(repository.deleteUser)
+            .toHaveBeenCalledWith("1");
+    });
+
+    test("Try to delete a dont exist user:", async () => {
+        const password = "Teste@1234";
+
+        repository.getUserById.mockResolvedValue(null);
+
+        const result = service.delete("1", password);
+
+        await expect(result)
+            .rejects
+            .toThrow("User dont exist.");
+        
+        expect(repository.getUserById)
+            .toHaveBeenCalledWith("1");
+    });
+
+    test("Try to delete a user using wrong password:", async () => {
+        const wrongPassword = "Teste@1234";
+        const correctPassword = "TEste@1234";
+        const correctPasswordHash = await bcrypt.hash(correctPassword, 10);
+        const date = new Date();
+
+        repository.getUserById.mockResolvedValue({
+            id: "1",
+            name: "Joao Victor",
+            email: "jvcampos531@gmail.com",
+            passwordHash: correctPasswordHash,
+            points: 0,
+            createdAt: date
+        });
+
+        const result = service.delete("1", wrongPassword);
+
+        await expect(result)
+            .rejects
+            .toThrow("Wrong password.");
+
+        expect(repository.getUserById)
+            .toHaveBeenCalledWith("1");
     });
 });
