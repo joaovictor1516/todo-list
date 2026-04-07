@@ -42,4 +42,20 @@ export class AuthService{
 
         return userDataBase;
     }
+
+    async delete(id: string, password: string):Promise<boolean>{
+        const user = await this.userRepository.getUserById(id);
+
+        if(!user){
+            throw new Error("User dont exist.");
+        }
+
+        const isValid = await bcrypt.compare(password, user.passwordHash);
+
+        if(!isValid){
+            throw new Error("Wrong password.");
+        }
+
+        return await this.userRepository.deleteUser(id);
+    }
 }
