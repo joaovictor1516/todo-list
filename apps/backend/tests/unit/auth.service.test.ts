@@ -1,4 +1,5 @@
-import { jest, test, expect, describe, beforeEach } from "@jest/globals";
+import { userDataMock, createUserDataMock, userLoginDataMock } from "../mock/user/user.data.mock";
+import { jest, test, expect, describe, beforeEach, beforeAll } from "@jest/globals";
 import { userRepositoryMock } from "../mock/user/user.repository.mock";
 import { UserRepository } from "../../src/repository/user.repository";
 import { AuthService } from "../../src/service/auth.service";
@@ -8,39 +9,22 @@ describe("Auth service tests:", () => {
     let repository: jest.Mocked<UserRepository>;
     let service: AuthService;
 
+    // beforeAll(() => {
+    //     jest.useFakeTimers();
+    //     jest.setSystemTime(new Date("2024-01-01T00:00:00.000Z"));
+    // });
+
     beforeEach(() => {
         repository = userRepositoryMock();
         service = new AuthService(repository);
     });
 
     test("Register a new user test:", async () => {
-        const date = new Date();
-        const password = "TEste@1234";
-        const passwordHash = await bcrypt.hash(password, 10);
+        repository.createUser.mockResolvedValue(userDataMock({id: "1"}));
 
-        repository.createUser.mockResolvedValue({
-            id: "1",
-            name: "Joao Victor",
-            email: "jvcampos531@gmail.com",
-            passwordHash: passwordHash,
-            points: 0,
-            createdAt: date
-        });
+        const result = await service.register(createUserDataMock({name: "Joao Victor"}));
 
-        const result = await service.register({
-            name: "Joao Victor",
-            password: password,
-            email: "jvcampos531@gmail.com"
-        });
-
-        expect(result).toEqual({
-            id: "1",
-            name: "Joao Victor",
-            email: "jvcampos531@gmail.com",
-            passwordHash: passwordHash,
-            points: 0,
-            createdAt: date
-        });
+        expect(result).toEqual(userDataMock({id: "1"}));
 
         expect(repository.createUser)
             .toHaveBeenCalledWith(
@@ -54,56 +38,33 @@ describe("Auth service tests:", () => {
     });
 
     test("Logn a user test:", async () => {
-        const date = new Date();
-        const password = "TEste@1234";
-        const passwordHash = await bcrypt.hash(password, 10);
+        const passwordHash = await bcrypt.hash("password", 10)
+        repository.getUserByEmail.mockResolvedValue(userDataMock({
+            id: "2",
+            passwordHash: passwordHash
+            }));
 
-        repository.getUserByEmail.mockResolvedValue({
-            id: "1",
-            name: "Joao Victor",
-            email: "jvcampos531@gmail.com",
-            passwordHash: passwordHash,
-            points: 0,
-            createdAt: date
-        });
+        const result = await service.login(userLoginDataMock({
+            email: "jvcampos531@gmail.com"
+        }));
 
-        const result = await service.login({
-            email: "jvcampos531@gmail.com", 
-            password: password
-        });
-
-        expect(result).toEqual({
-            id: "1",
-            name: "Joao Victor",
-            email: "jvcampos531@gmail.com",
-            passwordHash: passwordHash,
-            points: 0,
-            createdAt: date
-        });
+        expect(result).toEqual(userDataMock({
+            id: "2",
+            passwordHash: passwordHash
+        }));
 
         expect(repository.getUserByEmail)
             .toHaveBeenCalledWith("jvcampos531@gmail.com");
     });
 
     test("User alwere exist test:", async () => {
-        const date = new Date();
-        const password = "Teste@1234";
-        const passwordHash = await bcrypt.hash(password, 10);
+        repository.getUserByEmail.mockResolvedValue(userDataMock({
+            id: "1"
+        }));
 
-        repository.getUserByEmail.mockResolvedValue({
-            id: "1",
+        const result = service.register(createUserDataMock({
             name: "Joao Victor",
-            email: "jvcampos531@gmail.com",
-            passwordHash: passwordHash,
-            points: 0,
-            createdAt: date
-        });
-
-        const result = service.register({
-            name: "Joao Victor",
-            password: password,
-            email: "jvcampos531@gmail.com"
-        });
+        }));
 
         await expect(result)
             .rejects
@@ -114,14 +75,11 @@ describe("Auth service tests:", () => {
     });
 
     test("Try to make a login to a user dont exist:", async () => {
-        const password = "TEste@1234";
-
         repository.getUserByEmail.mockResolvedValue(null);
 
-        const result = service.login({
-            email: "jvcampos531@gmail.com",
-            password: password
-        });
+        const result = service.login(userLoginDataMock({
+            email: "jvcampos531@gmail.com"
+        }));
 
         await expect(result)
             .rejects
@@ -132,24 +90,13 @@ describe("Auth service tests:", () => {
     });
 
     test("Try to make login with wrong password:", async () => {
-        const password = "Teste@1234";
-        const correctPassword = "TEste@1234";
-        const correctPasswordHash = await bcrypt.hash(correctPassword, 10);
-        const date = new Date();
+        repository.getUserByEmail.mockResolvedValue(userDataMock({
+            passwordHash: "correct_password_hash"
+        }));
 
-        repository.getUserByEmail.mockResolvedValue({
-            id: "1",
-            name: "Joao Victor",
-            email: "jvcampos531@gmail.com",
-            passwordHash: correctPasswordHash,
-            points: 0,
-            createdAt: date
-        });
-
-        const result = service.login({
-            email: "jvcampos531@gmail.com",
-            password: password
-        });
+        const result = service.login(userLoginDataMock({
+            email: "jvcampos531@gmail.com"
+        }));
 
         await expect(result)
             .rejects
@@ -160,22 +107,16 @@ describe("Auth service tests:", () => {
     });
 
     test("Delete user test:", async () => {
-        const password = "Teste@1234";
-        const passwordHash = await bcrypt.hash(password, 10);
-        const date = new Date();
+        const passwordHash = await bcrypt.hash("hash_password", 10);
 
-        repository.getUserById.mockResolvedValue({
+        repository.getUserById.mockResolvedValue(userDataMock({
             id: "1",
-            name: "Joao Victor",
-            email: "jvcampos531@gmail.com",
-            passwordHash: passwordHash,
-            points: 0,
-            createdAt: date
-        });
+            passwordHash: passwordHash
+        }));
 
         repository.deleteUser.mockResolvedValue(true);
 
-        const result = await service.delete("1", password);
+        const result = await service.delete("1", "hash_password");
 
         expect(result).toEqual(true);
 
@@ -187,11 +128,9 @@ describe("Auth service tests:", () => {
     });
 
     test("Try to delete a dont exist user:", async () => {
-        const password = "Teste@1234";
-
         repository.getUserById.mockResolvedValue(null);
 
-        const result = service.delete("1", password);
+        const result = service.delete("1", "Teste@1234");
 
         await expect(result)
             .rejects
@@ -202,21 +141,11 @@ describe("Auth service tests:", () => {
     });
 
     test("Try to delete a user using wrong password:", async () => {
-        const wrongPassword = "Teste@1234";
-        const correctPassword = "TEste@1234";
-        const correctPasswordHash = await bcrypt.hash(correctPassword, 10);
-        const date = new Date();
+        repository.getUserById.mockResolvedValue(userDataMock({
+            id: "1"
+        }));
 
-        repository.getUserById.mockResolvedValue({
-            id: "1",
-            name: "Joao Victor",
-            email: "jvcampos531@gmail.com",
-            passwordHash: correctPasswordHash,
-            points: 0,
-            createdAt: date
-        });
-
-        const result = service.delete("1", wrongPassword);
+        const result = service.delete("1", "wrongPassword@20");
 
         await expect(result)
             .rejects
