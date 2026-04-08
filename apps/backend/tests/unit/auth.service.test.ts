@@ -32,7 +32,7 @@ describe("Auth service tests:", () => {
             );
     });
 
-    test("Logn a user test:", async () => {
+    test("Login a user test:", async () => {
         const passwordHash = await bcrypt.hash("password", 10)
         repository.getUserByEmail.mockResolvedValue(userDataMock({
             id: "2",
@@ -52,7 +52,7 @@ describe("Auth service tests:", () => {
             .toHaveBeenCalledWith("jvcampos531@gmail.com");
     });
 
-    test("User alwere exist test:", async () => {
+    test("User already exist test:", async () => {
         repository.getUserByEmail.mockResolvedValue(userDataMock({
             id: "1"
         }));
@@ -63,13 +63,13 @@ describe("Auth service tests:", () => {
 
         await expect(result)
             .rejects
-            .toThrow("The user alwere exist.");
+            .toThrow("The user already exist.");
 
         expect(repository.getUserByEmail)
             .toHaveBeenCalledWith("jvcampos531@gmail.com");
     });
 
-    test("Try to make a login to a user dont exist:", async () => {
+    test("Try to make a login to a user don't exist:", async () => {
         repository.getUserByEmail.mockResolvedValue(null);
 
         const result = service.login(userLoginDataMock({
@@ -122,7 +122,7 @@ describe("Auth service tests:", () => {
             .toHaveBeenCalledWith("1");
     });
 
-    test("Try to delete a dont exist user:", async () => {
+    test("Try to delete a don't exist user:", async () => {
         repository.getUserById.mockResolvedValue(null);
 
         const result = service.delete("1", "Teste@1234");

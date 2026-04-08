@@ -10,7 +10,7 @@ export class AuthService{
         const userExist = await this.userRepository.getUserByEmail(user.email);
 
         if(userExist){
-            throw new Error("The user alwere exist.");
+            throw new Error("The user already exist.");
         }
 
         const hashPassword = await bcrypt.hash(user.password, 10);
@@ -47,7 +47,7 @@ export class AuthService{
         const user = await this.userRepository.getUserById(id);
 
         if(!user){
-            throw new Error("User dont exist.");
+            throw new Error("User don't exist.");
         }
 
         const isValid = await bcrypt.compare(password, user.passwordHash);
