@@ -1,5 +1,4 @@
-import { TaskDbDto, TaskInputDto } from "../../../../../packages/schemas/taskInterfaces";
-import { jest } from "@jest/globals";
+import { TaskDbDto } from "../../../../../packages/schemas/taskInterfaces";
 
 export const taskDataMock = (overrides: Partial<TaskDbDto> = {}): TaskDbDto => ({
     id: "1",
@@ -10,13 +9,5 @@ export const taskDataMock = (overrides: Partial<TaskDbDto> = {}): TaskDbDto => (
     lastUpdate: new Date("2024-01-01T00:00:00.000Z"),
     isCompleted: false,
     priority: "high",
-    ...overrides
-});
-
-export const newTaskDataMock = (overrides: Partial<TaskInputDto> = {}): TaskInputDto => ({
-    title: "Ir para academia",
-    content: "Melhorar a saude",
-    priority: "high",
-    eventDate: new Date("2024-02-01T00:00:00.000Z"),
     ...overrides
 });
