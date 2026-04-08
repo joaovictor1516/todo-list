@@ -2,6 +2,8 @@ import { describe, jest, test, expect, beforeEach } from "@jest/globals";
 import { userRepositoryMock } from "../mock/user/user.repository.mock";
 import { UserRepository } from "../../src/repository/user.repository";
 import { UserService } from "../../src/service/user.service";
+import { taskDataMock } from "../mock/task/task.data.mock";
+import { userDataMock } from "../mock/user/user.data.mock";
 
 describe("User service tests.", () => {
     let repository: jest.Mocked<UserRepository>;
@@ -9,87 +11,36 @@ describe("User service tests.", () => {
 
     beforeEach(() => {
         repository = userRepositoryMock();
-
-        service = new UserService(repository as any);
+        service = new UserService(repository);
     });
 
     test("Get a user using his id:", async () => {
-        const date = new Date();
-
-        repository.getUserById.mockResolvedValue({
-            id: "1",
-            name: "Joao Victor",
-            email: "jvcampos531@gmail.com",
-            passwordHash: "algo",
-            points: 0,
-            createdAt: date
-        });
+        repository.getUserById.mockResolvedValue(userDataMock({
+            id: "1"
+        }));
         const result =  await service.getUserInformations("1");
 
-        expect(result).toEqual({
-            id: "1",
-            name: "Joao Victor",
-            email: "jvcampos531@gmail.com",
-            passwordHash: "algo",
-            points: 0,
-            createdAt: date
-        });
+        expect(result).toEqual(userDataMock({
+            id: "1"
+        }));
     });
 
     test("Get user tasks:", async () => {
-        const date = new Date();
-        const dateUser = new Date();
-        
-        repository.getUserById.mockResolvedValue({
-            id: "1",
-            name: "Joao Victor",
-            email: "jvcampos531@gmail.com",
-            passwordHash: "algo",
-            points: 0,
-            createdAt: dateUser
-        });
+        repository.getUserById.mockResolvedValue(userDataMock({
+            id: "1"
+        }));
 
-        repository.getUserTasks.mockResolvedValue([{
-            id: "1",
-            title: "Estudar Node.JS",
-            content: "Estudar bibliotecas usadas para subir migrations do banco de dados.",
-            createdAt: date,
-            lastUpdate: date,
-            eventDate: date,
-            priority: "high",
-            isCompleted: false
-        }, {
-            id: "2",
-            title: "Ir para a academia",
-            content: "Criar vergonha na cara e melhorar a saude.",
-            createdAt: date,
-            lastUpdate: date,
-            eventDate: date,
-            priority: "medium",
-            isCompleted: false
-        }]);
+        repository.getUserTasks.mockResolvedValue([taskDataMock({id: "1"}), taskDataMock({id: "2", 
+            title: "Malhar", 
+            content: "Ir  pra academia"})]);
 
         const result = await service.getUserTasks("1");
 
-        expect(result).toEqual([{
-            id: "1",
-            title: "Estudar Node.JS",
-            content: "Estudar bibliotecas usadas para subir migrations do banco de dados.",
-            createdAt: date,
-            lastUpdate: date,
-            eventDate: date,
-            priority: "high",
-            isCompleted: false
-        }, {
+        expect(result).toEqual([taskDataMock({ id: "1" }), taskDataMock({
             id: "2",
-            title: "Ir para a academia",
-            content: "Criar vergonha na cara e melhorar a saude.",
-            createdAt: date,
-            lastUpdate: date,
-            eventDate: date,
-            priority: "medium",
-            isCompleted: false
-        }]);
+            title: "Malhar",
+            content: "Ir  pra academia"
+        })]);
     });
 
     test("User not founded.", async () => {
