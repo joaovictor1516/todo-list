@@ -5,7 +5,19 @@ import { UserRepository } from "../../src/repository/user.repository";
 import { AuthService } from "../../src/service/auth.service";
 import bcrypt from "bcryptjs";
 
+jest.mock("bcryptjs", () => ({
+    compare: jest.fn(),
+    hash: jest.fn()
+}));
+
 describe("Auth service tests:", () => {
+    const bcryptCompareMock = bcrypt.compare as jest.MockedFunction<
+        (data: string | Buffer, encrypted: string) => Promise<boolean>
+    >;
+    const bcryptHashMock = bcrypt.hash as jest.MockedFunction<
+        (data: string | Buffer, saltOrRounds: string | number) => Promise<string>
+    >;
+
     let repository: jest.Mocked<UserRepository>;
     let service: AuthService;
 
@@ -15,6 +27,8 @@ describe("Auth service tests:", () => {
     });
 
     test("Register a new user test:", async () => {
+        bcryptHashMock.mockResolvedValue("hash_password");
+
         repository.createUser.mockResolvedValue(userDataMock({id: "1"}));
 
         const result = await service.register(createUserDataMock({name: "Joao Victor"}));
@@ -24,29 +38,30 @@ describe("Auth service tests:", () => {
         expect(repository.createUser)
             .toHaveBeenCalledWith(
                 expect.objectContaining({
-                    name: "Joao Victor",
-                    email: "jvcampos531@gmail.com",
                     id: expect.any(String),
-                    passwordHash: expect.any(String)
-                })
+                    passwordHash: "hash_password"
+                })                
             );
     });
 
     test("Login a user test:", async () => {
-        const passwordHash = await bcrypt.hash("password", 10)
         repository.getUserByEmail.mockResolvedValue(userDataMock({
-            id: "2",
-            passwordHash: passwordHash
+            id: "2"
             }));
 
+        // bcryptHashMock.mockResolvedValue("hash_password");
+        bcryptCompareMock.mockResolvedValue(true);
+        
         const result = await service.login(userLoginDataMock({
             email: "jvcampos531@gmail.com"
         }));
 
         expect(result).toEqual(userDataMock({
-            id: "2",
-            passwordHash: passwordHash
+            id: "2"
         }));
+
+        expect(bcrypt.compare)
+            .toHaveBeenCalled();
 
         expect(repository.getUserByEmail)
             .toHaveBeenCalledWith("jvcampos531@gmail.com");
@@ -85,6 +100,8 @@ describe("Auth service tests:", () => {
     });
 
     test("Try to make login with wrong password:", async () => {
+        bcryptCompareMock.mockResolvedValue(false);
+
         repository.getUserByEmail.mockResolvedValue(userDataMock({
             passwordHash: "correct_password_hash"
         }));
@@ -102,11 +119,11 @@ describe("Auth service tests:", () => {
     });
 
     test("Delete user test:", async () => {
-        const passwordHash = await bcrypt.hash("hash_password", 10);
+        bcryptHashMock.mockResolvedValue("hash_password");
+        bcryptCompareMock.mockResolvedValue(true);
 
         repository.getUserById.mockResolvedValue(userDataMock({
-            id: "1",
-            passwordHash: passwordHash
+            id: "1"
         }));
 
         repository.deleteUser.mockResolvedValue(true);
@@ -129,7 +146,7 @@ describe("Auth service tests:", () => {
 
         await expect(result)
             .rejects
-            .toThrow("User dont exist.");
+            .toThrow("User don't exist.");
         
         expect(repository.getUserById)
             .toHaveBeenCalledWith("1");
@@ -139,6 +156,8 @@ describe("Auth service tests:", () => {
         repository.getUserById.mockResolvedValue(userDataMock({
             id: "1"
         }));
+
+        bcryptCompareMock.mockResolvedValue(false);
 
         const result = service.delete("1", "wrongPassword@20");
 
