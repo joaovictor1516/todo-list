@@ -9,11 +9,6 @@ describe("Auth service tests:", () => {
     let repository: jest.Mocked<UserRepository>;
     let service: AuthService;
 
-    // beforeAll(() => {
-    //     jest.useFakeTimers();
-    //     jest.setSystemTime(new Date("2024-01-01T00:00:00.000Z"));
-    // });
-
     beforeEach(() => {
         repository = userRepositoryMock();
         service = new AuthService(repository);
