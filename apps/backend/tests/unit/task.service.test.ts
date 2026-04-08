@@ -2,6 +2,7 @@ import { describe, jest, test, expect, beforeEach } from "@jest/globals";
 import { taskRepositoryMock } from "../mock/task/task.repository.mock";
 import { TaskRepository } from "../../src/repository/task.repository";
 import { TaskService } from "../../src/service/task.service";
+import { taskDataMock } from "../mock/task/task.data.mock";
 
 describe("Task service tests:", () => {
     let repository: jest.Mocked<TaskRepository>;
@@ -13,130 +14,51 @@ describe("Task service tests:", () => {
     });
 
     test("Create new task test:", async () => {
-        const date = new Date();
-
-        repository.createTask.mockResolvedValue({
-            id: "1",
-            title: "Ir para a academia",
-            content: "Criar vergonha na cara e melhorar a saude.",
-            createdAt: date,
-            lastUpdate: date,
-            eventDate: date,
-            priority: "medium",
-            isCompleted: false
-        });
+        repository.createTask.mockResolvedValue(taskDataMock({id: "1"}));
         
-        const result = await service.createTask({
-            id: "1",
-            title: "Ir para a academia",
-            content: "Criar vergonha na cara e melhorar a saude.",
-            createdAt: date,
-            lastUpdate: date,
-            eventDate: date,
-            priority: "medium",
-            isCompleted: false
-        });
+        const result = await service.createTask(taskDataMock({id: "1"}));
 
-        expect(result).toEqual({
-            id: "1",
-            title: "Ir para a academia",
-            content: "Criar vergonha na cara e melhorar a saude.",
-            createdAt: date,
-            lastUpdate: date,
-            eventDate: date,
-            priority: "medium",
-            isCompleted: false
-        });
+        expect(result).toEqual(taskDataMock({id: "1"}));
 
         expect(repository.createTask)
-            .toHaveBeenCalledWith({
-            id: "1",
-            title: "Ir para a academia",
-            content: "Criar vergonha na cara e melhorar a saude.",
-            createdAt: date,
-            lastUpdate: date,
-            eventDate: date,
-            priority: "medium",
-            isCompleted: false
-        });
+            .toHaveBeenCalledWith(taskDataMock({id: "1"}));
     });
 
     test("Get all tasks test:", async () => {
-        const dateStudyTask = new Date();
-        const date = new Date();
-
-        repository.getTasks.mockResolvedValue([{
-            id: "1",
-            title: "Ir para a academia",
-            content: "Criar vergonha na cara e melhorar a saude.",
-            createdAt: date,
-            lastUpdate: date,
-            eventDate: date,
-            priority: "medium",
-            isCompleted: false
-        }, {
+        repository.getTasks.mockResolvedValue([taskDataMock({id: "1"}), taskDataMock({
             id: "2",
             title: "Estudar React.JS",
             content: "Criar vergonha na cara e melhorar a saude.",
-            createdAt: dateStudyTask,
-            lastUpdate: dateStudyTask,
-            eventDate: dateStudyTask,
-            priority: "medium",
-            isCompleted: false
-        }]);
+            priority: "medium"
+        })]);
 
         const result = await service.getTasks();
 
-        expect(result).toEqual([{
-            id: "1",
-            title: "Ir para a academia",
-            content: "Criar vergonha na cara e melhorar a saude.",
-            createdAt: date,
-            lastUpdate: date,
-            eventDate: date,
-            priority: "medium",
-            isCompleted: false
-        }, {
+        expect(result).toEqual([taskDataMock({ id: "1" }), taskDataMock({
             id: "2",
             title: "Estudar React.JS",
             content: "Criar vergonha na cara e melhorar a saude.",
-            createdAt: dateStudyTask,
-            lastUpdate: dateStudyTask,
-            eventDate: dateStudyTask,
-            priority: "medium",
-            isCompleted: false
-        }]);
+            priority: "medium"
+        })]);
 
         expect(repository.getTasks)
             .toHaveBeenCalled();
     });
 
-    test("Get a task using id:", async () => { 
-        const dateStudyTask = new Date();
-
-        repository.getTaskById.mockResolvedValue({
+    test("Get a task using id:", async () => {
+        repository.getTaskById.mockResolvedValue(taskDataMock({
             id: "2",
             title: "Estudar React.JS",
-            content: "Criar vergonha na cara e melhorar a saude.",
-            createdAt: dateStudyTask,
-            lastUpdate: dateStudyTask,
-            eventDate: dateStudyTask,
-            priority: "medium",
-            isCompleted: false
-        });
+            content: "Criar vergonha na cara e melhorar a saude."
+        }));
 
         const result = await service.getTaskById("2");
 
-        expect(result).toEqual({
+        expect(result).toEqual(taskDataMock({
             id: "2",
             title: "Estudar React.JS",
-            content: "Criar vergonha na cara e melhorar a saude.",
-            createdAt: dateStudyTask,
-            lastUpdate: dateStudyTask,
-            eventDate: dateStudyTask,
-            priority: "medium",
-            isCompleted: false
-        });
+            content: "Criar vergonha na cara e melhorar a saude."
+        }));
 
         expect(repository.getTaskById)
             .toHaveBeenCalledWith("2");
@@ -148,47 +70,28 @@ describe("Task service tests:", () => {
             .toThrow("Task dont exist.");
 
         expect(repository.getTaskById)
-            .toHaveBeenCalledWith("3");
-            
+            .toHaveBeenCalledWith("3");   
     });
 
     test("Complete a task test:", async () => {
-        const date = new Date();
-
-        repository.getTaskById.mockResolvedValue({
+        repository.getTaskById.mockResolvedValue(taskDataMock({
             id: "1",
-            title: "Ir para a academia",
-            content: "Criar vergonha na cara e melhorar a saude.",
-            createdAt: date,
-            lastUpdate: date,
-            eventDate: date,
             priority: "medium",
-            isCompleted: false
-        });
+        }));
 
-        repository.checkTask.mockResolvedValue({
+        repository.checkTask.mockResolvedValue(taskDataMock({
             id: "1",
-            title: "Ir para a academia",
-            content: "Criar vergonha na cara e melhorar a saude.",
-            createdAt: date,
-            lastUpdate: date,
-            eventDate: date,
             priority: "medium",
             isCompleted: true
-        });
+        }));
 
         const result = await service.completTask("1");
 
-        expect(result).toEqual({
+        expect(result).toEqual(taskDataMock({
             id: "1",
-            title: "Ir para a academia",
-            content: "Criar vergonha na cara e melhorar a saude.",
-            createdAt: date,
-            lastUpdate: date,
-            eventDate: date,
             priority: "medium",
             isCompleted: true
-        });
+        }));
 
         expect(repository.getTaskById)
             .toHaveBeenCalledWith("1");
@@ -198,18 +101,10 @@ describe("Task service tests:", () => {
     });
 
     test("Try to check a task checked:", async () => {
-        const date = new Date();
-
-        repository.getTaskById.mockResolvedValue({
+        repository.getTaskById.mockResolvedValue(taskDataMock({
             id: "1",
-            title: "Ir para a academia",
-            content: "Criar vergonha na cara e melhorar a saude.",
-            createdAt: date,
-            lastUpdate: date,
-            eventDate: date,
-            priority: "medium",
             isCompleted: true
-        });
+        }));
 
         await expect(service.completTask("1"))
             .rejects
@@ -220,82 +115,48 @@ describe("Task service tests:", () => {
     });
 
     test("Update a task test:", async () => {
-        const date = new Date();
-        const newDate = new Date();
-
-        repository.getTaskById.mockResolvedValue({
+        repository.getTaskById.mockResolvedValue(taskDataMock({
             id: "1",
-            title: "Ir para a academia",
-            content: "Criar vergonha na cara e melhorar a saude.",
-            createdAt: date,
-            lastUpdate: date,
-            eventDate: date,
-            priority: "medium",
-            isCompleted: false
-        });
+            priority: "medium"
+        }));
 
-        repository.updateTask.mockResolvedValue({
+        repository.updateTask.mockResolvedValue(taskDataMock({
             id: "1",
             title: "Estudar React",
             content: "Praticar mais o desenvolvimento do front de um projeto!!",
-            createdAt: date,
-            lastUpdate: newDate,
-            eventDate: date,
-            priority: "medium",
-            isCompleted: false
-        });
+            lastUpdate: new Date("2024-02-01T00:00:00.000Z"),
+        }));
 
-        const result = await service.updateTask("1", {
+        const result = await service.updateTask("1", taskDataMock({
             id: "1",
             title: "Estudar React",
             content: "Praticar mais o desenvolvimento do front de um projeto!!",
-            createdAt: date,
-            lastUpdate: date,
-            eventDate: date,
-            priority: "medium",
-            isCompleted: false
-        });
+            lastUpdate: new Date("2024-02-01T00:00:00.000Z")
+        }));
 
-        expect(result).toEqual({
+        expect(result).toEqual(taskDataMock({
             id: "1",
             title: "Estudar React",
             content: "Praticar mais o desenvolvimento do front de um projeto!!",
-            createdAt: date,
-            lastUpdate: newDate,
-            eventDate: date,
-            priority: "medium",
-            isCompleted: false
-        });
+            lastUpdate: new Date("2024-02-01T00:00:00.000Z")
+        }));
 
         expect(repository.getTaskById)
             .toHaveBeenCalledWith("1");
 
         expect(repository.updateTask)
-            .toHaveBeenCalledWith("1", {
+            .toHaveBeenCalledWith("1", taskDataMock({
                 id: "1",
                 title: "Estudar React",
                 content: "Praticar mais o desenvolvimento do front de um projeto!!",
-                createdAt: date,
-                lastUpdate: newDate,
-                eventDate: date,
-                priority: "medium",
-                isCompleted: false
-            });
+                lastUpdate: new Date("2024-02-01T00:00:00.000Z")
+            }));
     });
 
     test("Delete a task test:", async () => {
-        const date = new Date();
-
-        repository.getTaskById.mockResolvedValue({
-            id: "1",
-            title: "Estudar React",
-            content: "Praticar mais o desenvolvimento do front de um projeto!!",
-            createdAt: date,
-            lastUpdate: date,
-            eventDate: date,
-            priority: "medium",
-            isCompleted: false
-        });
+        repository.getTaskById.mockResolvedValue(taskDataMock({
+            id: "1"
+        }));
 
         repository.deleteTask.mockResolvedValue(true);
 
