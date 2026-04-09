@@ -1,5 +1,5 @@
 import { userDataMock, createUserDataMock, userLoginDataMock } from "../mock/user/user.data.mock";
-import { jest, test, expect, describe, beforeEach, beforeAll } from "@jest/globals";
+import { jest, test, expect, describe, beforeEach, afterEach } from "@jest/globals";
 import { userRepositoryMock } from "../mock/user/user.repository.mock";
 import { UserRepository } from "../../src/repository/user.repository";
 import { AuthService } from "../../src/service/auth.service";
@@ -24,6 +24,10 @@ describe("Auth service tests:", () => {
     beforeEach(() => {
         repository = userRepositoryMock();
         service = new AuthService(repository);
+    });
+
+    afterEach(() => {
+        jest.clearAllMocks();
     });
 
     test("Register a new user test:", async () => {
