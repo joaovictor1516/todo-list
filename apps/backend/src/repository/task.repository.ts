@@ -1,9 +1,12 @@
 import { TaskDbDto } from "../../../../packages/schemas/taskInterfaces";
 import { pool } from "../database";
+import { Pool } from "pg";
 
 export class TaskRepository {
+    constructor(private pool: Pool){}
+
     async createTask(task: TaskDbDto):Promise<TaskDbDto> {
-        const newTask = await pool.query("INSERT INTO tasks (task_id, task_title, task_content, task_state, task_created_at, task_event_date, task_priority)  VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *",
+        const newTask = await this.pool.query("INSERT INTO tasks (task_id, task_title, task_content, task_state, task_created_at, task_event_date, task_priority)  VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *",
             [task.id, task.title, task.content, task.isCompleted, task.createdAt, task.eventDate, task.priority]
         );
 

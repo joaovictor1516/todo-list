@@ -3,10 +3,11 @@ import { TaskController } from "../controllers/task.controller";
 import { TaskRepository } from "../repository/task.repository";
 import { TaskService } from "../service/task.service";
 import { typeProvider } from "../index";
+import { pool } from "../database";
 import { z } from "zod";
 
 export async function TaskRoute(app: typeof typeProvider){
-    const taskRepository = new TaskRepository();
+    const taskRepository = new TaskRepository(pool);
     const taskService = new TaskService(taskRepository);
     const taskController = new TaskController(taskService);
     app.get("/",
