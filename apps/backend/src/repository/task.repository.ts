@@ -1,5 +1,4 @@
 import { TaskDbDto } from "../../../../packages/schemas/taskInterfaces";
-import { pool } from "../database";
 import { Pool } from "pg";
 
 export class TaskRepository {
@@ -14,19 +13,19 @@ export class TaskRepository {
     }
 
     async getTasks():Promise<TaskDbDto[]> {
-        const tasks = await pool.query("SELECT * FROM tasks");
+        const tasks = await this.pool.query("SELECT * FROM tasks");
 
         return tasks.rows;
     }
 
     async getTaskById(id: string):Promise<TaskDbDto | null> {
-        const task = await pool.query("SELECT * FROM tasks WHERE task_id = $1", [id]);
+        const task = await this.pool.query("SELECT * FROM tasks WHERE task_id = $1", [id]);
 
         return task.rows[0];
     }
 
     async updateTask(id: string, task: TaskDbDto):Promise<TaskDbDto> {
-        const taskUpdated = await pool.query("UPDATE tasks SET task_title = $2, task_content = $3, task_state = $4, task_event_date = $5, task_priority = $6 WHERE task_id = $1 RETURNING *",
+        const taskUpdated = await this.pool.query("UPDATE tasks SET task_title = $2, task_content = $3, task_state = $4, task_event_date = $5, task_priority = $6 WHERE task_id = $1 RETURNING *",
             [id, task.title, task.content, task.isCompleted, task.eventDate, task.priority]
         );
 
@@ -34,13 +33,13 @@ export class TaskRepository {
     }
 
     async checkTask(id: string):Promise<TaskDbDto>{
-        const taskChecked = await pool.query("UPDATE tasks SET task_state = true WHERE task_id = $1 RETURNING *", [id]);
+        const taskChecked = await this.pool.query("UPDATE tasks SET task_state = true WHERE task_id = $1 RETURNING *", [id]);
 
         return taskChecked.rows[0];
     }
 
     async deleteTask(id: string):Promise<boolean> {
-        const task = await pool.query("DELETE FROM tasks WHERE task_id = $1", [id]);
+        const task = await this.pool.query("DELETE FROM tasks WHERE task_id = $1", [id]);
         
         return (task.rowCount ?? 0) > 0;
     }
