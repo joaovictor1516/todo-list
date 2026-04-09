@@ -49,11 +49,9 @@ describe("Auth service tests:", () => {
     });
 
     test("Login a user test:", async () => {
-        repository.getUserByEmail.mockResolvedValue(userDataMock({
-            id: "2"
-            }));
+        repository.getUserByEmail.mockResolvedValue(userDataMock({id: "2"}));
 
-        // bcryptHashMock.mockResolvedValue("hash_password");
+        bcryptHashMock.mockResolvedValue("hash_password");
         bcryptCompareMock.mockResolvedValue(true);
         
         const result = await service.login(userLoginDataMock({
@@ -72,13 +70,9 @@ describe("Auth service tests:", () => {
     });
 
     test("User already exist test:", async () => {
-        repository.getUserByEmail.mockResolvedValue(userDataMock({
-            id: "1"
-        }));
+        repository.getUserByEmail.mockResolvedValue(userDataMock({id: "1"}));
 
-        const result = service.register(createUserDataMock({
-            name: "Joao Victor",
-        }));
+        const result = service.register(createUserDataMock({name: "Joao Victor",}));
 
         await expect(result)
             .rejects
@@ -91,9 +85,7 @@ describe("Auth service tests:", () => {
     test("Try to make a login to a user don't exist:", async () => {
         repository.getUserByEmail.mockResolvedValue(null);
 
-        const result = service.login(userLoginDataMock({
-            email: "jvcampos531@gmail.com"
-        }));
+        const result = service.login(userLoginDataMock({email: "jvcampos531@gmail.com"}));
 
         await expect(result)
             .rejects
