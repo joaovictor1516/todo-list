@@ -16,7 +16,7 @@ export class TaskService{
         const task = await this.taskRepository.getTaskById(id);
 
         if(!task){
-            throw new Error("Task dont exist.");
+            throw new Error("Task don't exist.");
         }
 
         return task;
@@ -26,7 +26,7 @@ export class TaskService{
         const  taskExist =  await this.getTaskById(id);
         
         if (taskExist.isCompleted === true){
-            throw new Error("Task is alwere completed.");
+            throw new Error("Task is already completed.");
         }
 
         return await this.taskRepository.updateTask(id, task);
@@ -36,7 +36,7 @@ export class TaskService{
         const task = await this.getTaskById(id);
 
         if(task.isCompleted === true){
-            throw new Error("Task is alwere completed.");
+            throw new Error("Task is already completed.");
         }
 
         return await this.taskRepository.checkTask(id);
