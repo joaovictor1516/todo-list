@@ -3,10 +3,11 @@ import { UserController } from "../controllers/user.controller";
 import { UserRepository } from "../repository/user.repository";
 import { UserService } from "../service/user.service";
 import { typeProvider } from "../index";
+import { pool } from "../database";
 import { z } from "zod";
 
 export async function UserRoute(app: typeof typeProvider){
-    const userRepository = new UserRepository();
+    const userRepository = new UserRepository(pool);
     const userService = new UserService(userRepository);
     const userController = new UserController(userService);
 
