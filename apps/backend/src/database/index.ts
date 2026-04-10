@@ -1,5 +1,5 @@
-import { Pool } from "pg";
 import { env } from "../libs/envSchema";
+import { Pool } from "pg";
 
 export const pool = new Pool({
     host: env.DATABASE_HOST,
