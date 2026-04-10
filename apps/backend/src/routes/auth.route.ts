@@ -2,10 +2,11 @@ import { userPublic, userInput, userLogin } from "../../../../packages/schemas/u
 import { AuthController } from "../controllers/auth.controller";
 import { UserRepository } from "../repository/user.repository";
 import { AuthService } from "../service/auth.service";
-import { typeProvider } from "../index";
+import { FastifyInstance } from "fastify";
 import { pool } from "../database";
+import { z } from "zod";
 
-export async function AuthRoute(app: typeof typeProvider){
+export async function AuthRoute(app: FastifyInstance){
     const userRepository = new UserRepository(pool);
     const authService = new AuthService(userRepository);
     const authController = new AuthController(authService);

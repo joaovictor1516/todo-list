@@ -2,11 +2,11 @@ import { userInput, userPublic } from "../../../../packages/schemas/userInterfac
 import { UserController } from "../controllers/user.controller";
 import { UserRepository } from "../repository/user.repository";
 import { UserService } from "../service/user.service";
-import { typeProvider } from "../index";
+import { FastifyInstance } from "fastify";
 import { pool } from "../database";
 import { z } from "zod";
 
-export async function UserRoute(app: typeof typeProvider){
+export async function UserRoute(app: FastifyInstance){
     const userRepository = new UserRepository(pool);
     const userService = new UserService(userRepository);
     const userController = new UserController(userService);
@@ -24,7 +24,7 @@ export async function UserRoute(app: typeof typeProvider){
     app.get("/me/tasks", {
         schema: {
             response: {
-                200: userPublic
+                200: userPublic.array()
                 }
             }
         },
@@ -33,9 +33,9 @@ export async function UserRoute(app: typeof typeProvider){
 
     app.put("/me", {
         schema: {
-            params: {
+            params: z.object({
                 id: z.uuid()
-                },
+                }),
             body: userInput,
             response: {
                 200: userPublic
@@ -47,9 +47,9 @@ export async function UserRoute(app: typeof typeProvider){
 
     app.put("/me/points", {
         schema: {
-            params: {
+            params: z.object({
                 id: z.uuid()
-                },
+                }),
             body: z.number(),
             response: {
                 200: userPublic
