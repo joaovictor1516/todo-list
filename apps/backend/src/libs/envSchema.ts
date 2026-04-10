@@ -8,7 +8,8 @@ const envSchema = z.object({
     DATABASE_PASSWORD: z.string(),
     DATABASE_NAME: z.string(),
     DATABASE_USER: z.string(),
-    DATABASE_HOST: z.string()
+    DATABASE_HOST: z.string(),
+    DATABASE_TEST_NAME: z.string()
 });
 
 export const env = envSchema.parse(process.env);
