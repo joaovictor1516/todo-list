@@ -29,7 +29,7 @@ export class TaskController{
             }
         }
         >, reply: FastifyReply) {
-        const task = await this.taskService.getTaskById(reply.request.id);
+        const task = await this.taskService.getTaskById(request.params.id);
 
         return reply.code(200).send(task);
     }

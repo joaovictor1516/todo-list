@@ -1,5 +1,4 @@
-import { UserInterface, UserDbDto, UserInputDto } from "../../../../packages/schemas/userInterfaces";
-import { TaskDbDto } from "../../../../packages/schemas/taskInterfaces";
+import { UserInputDto } from "../../../../packages/schemas/userInterfaces";
 import { FastifyRequest, FastifyReply } from "fastify";
 import { UserService } from "../service/user.service";
 
