@@ -10,19 +10,23 @@ import fastifyJwt from "@fastify/jwt";
 import cors from "@fastify/cors";
 import fastify from "fastify";
 
-const app = fastify();
+const app = fastify({logger: true}).withTypeProvider<ZodTypeProvider>();
 
-export const typeProvider = app.withTypeProvider<ZodTypeProvider>();
+app.setSerializerCompiler(serializerCompiler);
+app.setValidatorCompiler(validatorCompiler);
 
 app.register(fastifySwagger, {
-    swagger: {
-        consumes: ["aplication/json"],
-        produces: ["aplication/json"],
+    openapi: {
         info: {
             title: "DailyTasks",
             description: "API do DailyTasks.",
             version: "1.0.0"
-        }
+        },
+        servers: [
+            {
+                url: `http://localhost:${env.PORT}`
+            }
+        ]
     },
     transform: jsonSchemaTransform
 });
@@ -32,7 +36,8 @@ app.register(fastifySwaggerUI, {
 });
 
 app.register(cors, {
-    origin: env.WEB_BASE_URL
+    // origin: env.WEB_BASE_URL
+    origin: true
 });
 
 app.register(fastifyJwt, {
@@ -44,9 +49,12 @@ app.register(UserRoute, { prefix: "/users" });
 app.register(AuthRoute, { prefix: "/auth" });
 
 app.setErrorHandler(errorHandler);
-app.setSerializerCompiler(serializerCompiler);
-app.setValidatorCompiler(validatorCompiler);
 
 app.listen({
     port: env.PORT
+}).then(() => {
+    console.log("Server running.");
+}).catch((error) => {
+    app.log.error(error);
+    process.exit(1);
 });
