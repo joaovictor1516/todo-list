@@ -3,10 +3,10 @@ import { AuthController } from "../controllers/auth.controller";
 import { UserRepository } from "../repository/user.repository";
 import { AuthService } from "../service/auth.service";
 import { typeProvider } from "../index";
-
+import { pool } from "../database";
 
 export async function AuthRoute(app: typeof typeProvider){
-    const userRepository = new UserRepository();
+    const userRepository = new UserRepository(pool);
     const authService = new AuthService(userRepository);
     const authController = new AuthController(authService);
 
