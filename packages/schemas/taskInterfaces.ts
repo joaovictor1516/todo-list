@@ -14,7 +14,7 @@ export const taskPublic = z.object({
 const taskInput = z.object({
     title: z.string().min(3),
     content: z.string().min(5),
-    eventDate: z.date().nullish(),
+    eventDate: z.date(),
     priority: z.enum(["low", "medium", "high"]).default("low"),
 });
 
