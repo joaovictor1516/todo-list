@@ -1,8 +1,7 @@
-import { TaskDbDto, TaskInterface } from "../../../../packages/schemas/taskInterfaces";
-import { TaskRepository } from "../repository/task.repository";
+import { TaskDbDto, TaskInterface, TaskRepositoryInterface } from "../../../../packages/schemas/taskInterfaces";
 
 export class TaskService{
-    constructor(private taskRepository: TaskRepository){}
+    constructor(private taskRepository: TaskRepositoryInterface){}
 
     async createTask(task: TaskInterface):Promise<TaskDbDto>{
         return await this.taskRepository.createTask(task);
