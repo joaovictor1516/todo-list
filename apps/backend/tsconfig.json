@@ -4,12 +4,12 @@
 
   "compilerOptions": {
     "lib": ["es2024", "dom", "dom.iterable"],
-    "module": "node16",
+    "module": "nodeNext",
     "target": "es2022",
     "noEmit": true,
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "moduleResolution": "node16"
+    "moduleResolution": "nodeNext"
   }
 }
