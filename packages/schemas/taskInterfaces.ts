@@ -50,4 +50,4 @@ export interface TaskRepositoryInterface{
     updateTask: (id: string, task: TaskDbDto) => Promise<TaskDbDto>;
     checkTask: (id: string) => Promise<TaskDbDto>;
     deleteTask: (id: string) => Promise<boolean>;
-}
+};
