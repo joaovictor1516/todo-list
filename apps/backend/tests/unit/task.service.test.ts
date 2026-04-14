@@ -1,11 +1,11 @@
 import { describe, jest, test, expect, beforeEach } from "@jest/globals";
 import { taskRepositoryMock } from "../mock/task/task.repository.mock";
-import { TaskRepository } from "../../src/repository/task.repository";
 import { TaskService } from "../../src/service/task.service";
 import { taskDataMock } from "../mock/task/task.data.mock";
+import { TaskRepositoryInterface } from "../../../../packages/schemas/taskInterfaces";
 
 describe("Task service tests:", () => {
-    let repository: jest.Mocked<TaskRepository>;
+    let repository: jest.Mocked<TaskRepositoryInterface>;
     let service: TaskService;
 
     beforeEach(() => {
