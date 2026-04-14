@@ -40,5 +40,14 @@ export interface TaskProps extends TaskInterface{
 };
 
 export interface NewTaskInterface{
-    createTask: (data: TaskInputDto) => void;
+    createTask: (task: TaskInputDto) => void;
 };
+
+export interface TaskRepositoryInterface{
+    createTask: (task: TaskDbDto) => Promise<TaskDbDto>;
+    getTasks: () => Promise<TaskDbDto[]>;
+    getTaskById: (id: string) => Promise<TaskDbDto | null>;
+    updateTask: (id: string, task: TaskDbDto) => Promise<TaskDbDto>;
+    checkTask: (id: string) => Promise<TaskDbDto>;
+    deleteTask: (id: string) => Promise<boolean>;
+}
