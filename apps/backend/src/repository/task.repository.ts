@@ -1,7 +1,7 @@
-import { TaskDbDto } from "../../../../packages/schemas/taskInterfaces";
+import { TaskDbDto, TaskRepositoryInterface } from "../../../../packages/schemas/taskInterfaces";
 import { Pool } from "pg";
 
-export class TaskRepository {
+export class TaskRepository implements TaskRepositoryInterface{
     constructor(private pool: Pool){}
 
     async createTask(task: TaskDbDto):Promise<TaskDbDto> {
