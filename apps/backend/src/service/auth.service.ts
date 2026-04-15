@@ -1,10 +1,9 @@
-import { UserDbDto, UserLoginDto, UserInputDto } from "../../../../packages/schemas/userInterfaces";
-import { UserRepository } from "../repository/user.repository";
+import { UserDbDto, UserLoginDto, UserInputDto, UserRepositoryInterface } from "../../../../packages/schemas/userInterfaces";
 import { randomUUID } from "crypto";
 import bcrypt from "bcryptjs";
 
 export class AuthService{
-    constructor(private userRepository: UserRepository){}
+    constructor(private userRepository: UserRepositoryInterface){}
 
     async register(user: UserInputDto):Promise<UserDbDto>{
         const userExist = await this.userRepository.getUserByEmail(user.email);

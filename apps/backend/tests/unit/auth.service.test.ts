@@ -1,7 +1,7 @@
 import { userDataMock, createUserDataMock, userLoginDataMock } from "../mock/user/user.data.mock";
+import { UserRepositoryInterface } from "../../../../packages/schemas/userInterfaces";
 import { jest, test, expect, describe, beforeEach, afterEach } from "@jest/globals";
 import { userRepositoryMock } from "../mock/user/user.repository.mock";
-import { UserRepository } from "../../src/repository/user.repository";
 import { AuthService } from "../../src/service/auth.service";
 import bcrypt from "bcryptjs";
 
@@ -18,7 +18,7 @@ describe("Auth service tests:", () => {
         (data: string | Buffer, saltOrRounds: string | number) => Promise<string>
     >;
 
-    let repository: jest.Mocked<UserRepository>;
+    let repository: jest.Mocked<UserRepositoryInterface>;
     let service: AuthService;
 
     beforeEach(() => {
