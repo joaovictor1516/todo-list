@@ -1,8 +1,8 @@
+import { TaskRepositoryInterface } from "../../../../packages/schemas/taskInterfaces";
 import { describe, jest, test, expect, beforeEach } from "@jest/globals";
 import { taskRepositoryMock } from "../mock/task/task.repository.mock";
 import { TaskService } from "../../src/service/task.service";
 import { taskDataMock } from "../mock/task/task.data.mock";
-import { TaskRepositoryInterface } from "../../../../packages/schemas/taskInterfaces";
 
 describe("Task service tests:", () => {
     let repository: jest.Mocked<TaskRepositoryInterface>;
@@ -67,7 +67,7 @@ describe("Task service tests:", () => {
     test("Try to get a not exist task:", async () => {
         await expect(service.getTaskById("3"))
             .rejects
-            .toThrow("Task dont exist.");
+            .toThrow("Task don't exist.");
 
         expect(repository.getTaskById)
             .toHaveBeenCalledWith("3");   
@@ -108,7 +108,7 @@ describe("Task service tests:", () => {
 
         await expect(service.completTask("1"))
             .rejects
-            .toThrow("Task is alwere completed.");
+            .toThrow("Task is already completed.");
 
         expect(repository.getTaskById)
             .toHaveBeenCalledWith("1");
@@ -178,7 +178,7 @@ describe("Task service tests:", () => {
 
         await expect(result)
             .rejects
-            .toThrow("Task dont exist.");
+            .toThrow("Task don't exist.");
 
         expect(repository.getTaskById)
             .toHaveBeenCalledWith("1");
