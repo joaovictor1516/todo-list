@@ -1,7 +1,7 @@
-import { UserRepository } from "../../../src/repository/user.repository";
+import { UserRepositoryInterface } from "../../../../../packages/schemas/userInterfaces";
 import { jest } from "@jest/globals";
 
-export const userRepositoryMock = (): jest.Mocked<UserRepository> => ({
+export const userRepositoryMock = (): jest.Mocked<UserRepositoryInterface> => ({
     getUserByEmail: jest.fn(),
     getUserTasks: jest.fn(),
     getUserById: jest.fn(),

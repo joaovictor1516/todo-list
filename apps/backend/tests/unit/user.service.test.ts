@@ -1,12 +1,12 @@
+import { UserRepositoryInterface } from "../../../../packages/schemas/userInterfaces";
 import { describe, jest, test, expect, beforeEach } from "@jest/globals";
 import { userRepositoryMock } from "../mock/user/user.repository.mock";
-import { UserRepository } from "../../src/repository/user.repository";
 import { UserService } from "../../src/service/user.service";
 import { taskDataMock } from "../mock/task/task.data.mock";
 import { userDataMock } from "../mock/user/user.data.mock";
 
 describe("User service tests.", () => {
-    let repository: jest.Mocked<UserRepository>;
+    let repository: jest.Mocked<UserRepositoryInterface>;
     let service: UserService;
 
     beforeEach(() => {
