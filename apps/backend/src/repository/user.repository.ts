@@ -1,8 +1,8 @@
-import { UserDbDto, UserInputDto } from "../../../../packages/schemas/userInterfaces";
+import { UserDbDto, UserInputDto, UserRepositoryInterface } from "../../../../packages/schemas/userInterfaces";
 import { TaskDbDto } from "../../../../packages/schemas/taskInterfaces";
 import { Pool } from "pg";
 
-export class UserRepository{
+export class UserRepository implements UserRepositoryInterface{
     constructor(private pool: Pool){}
 
     async createUser(user: UserDbDto):Promise<UserDbDto>{

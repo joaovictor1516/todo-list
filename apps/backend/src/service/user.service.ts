@@ -1,9 +1,8 @@
-import { UserDbDto, UserInputDto } from "../../../../packages/schemas/userInterfaces";
+import { UserDbDto, UserInputDto, UserRepositoryInterface } from "../../../../packages/schemas/userInterfaces";
 import { TaskDbDto } from "../../../../packages/schemas/taskInterfaces";
-import { UserRepository } from "../repository/user.repository";
 
 export class UserService{
-    constructor(private userRepository: UserRepository){}    
+    constructor(private userRepository: UserRepositoryInterface){}    
 
     async getUserInformations(id: string): Promise<UserDbDto>{
         const userInformarions = await this.userRepository.getUserById(id);
