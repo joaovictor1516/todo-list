@@ -1,3 +1,4 @@
+import { TaskDbDto } from "./taskInterfaces";
 import { z } from "zod";
 
 export const userPublic = z.object({
@@ -35,4 +36,15 @@ export type UserDbDto = z.infer<typeof userDb>
 
 export interface NewUserInterface{
  newUser: (data: UserInputDto) => void; 
+};
+
+export interface UserRepositoryInterface{
+    createUser: (user: UserDbDto) => Promise<UserDbDto>;
+    getUsers: () => Promise<UserDbDto[]>;
+    getUserById: (id: string) => Promise<UserDbDto | null>;
+    getUserByEmail: (email: string) => Promise<UserDbDto | null>;
+    getUserTasks: (id: string) => Promise<TaskDbDto[]>;
+    updateUser: (id: string, user: UserInputDto) => Promise<UserDbDto>;
+    updatePoint: (id: string, newUserPoints: number) => Promise<UserDbDto>;
+    deleteUser: (id: string) => Promise<boolean>;
 };
