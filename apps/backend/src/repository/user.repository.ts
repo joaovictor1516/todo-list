@@ -6,7 +6,7 @@ export class UserRepository implements UserRepositoryInterface{
     constructor(private pool: Pool){}
 
     async createUser(user: UserDbDto):Promise<UserDbDto>{
-        const newUser = await this.pool.query("INSERT INTO users (user_id, user_email, user_name, user_points) VALUES ($1, $2, $3, $4) RETURNING *", [user.id, user.email, user.name, user.points]);
+        const newUser = await this.pool.query("INSERT INTO users (user_id, user_email, user_name, user_points, user_created_at) VALUES ($1, $2, $3, $4, $5) RETURNING *", [user.id, user.email, user.name, user.points, user.createdAt]);
 
         return newUser.rows[0];
     }

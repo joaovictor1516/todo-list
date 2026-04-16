@@ -4,4 +4,5 @@ CREATE TABLE users (
     user_email VARCHAR(254) UNIQUE NOT NULL,
     user_name VARCHAR(50) UNIQUE NOT NULL,
     user_points INT NOT NULL DEFAULT 0,
-);
+    user_created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+    );
