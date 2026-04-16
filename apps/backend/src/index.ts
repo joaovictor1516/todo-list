@@ -10,7 +10,7 @@ import fastifyJwt from "@fastify/jwt";
 import cors from "@fastify/cors";
 import fastify from "fastify";
 
-const app = fastify({logger: true}).withTypeProvider<ZodTypeProvider>();
+export const app = fastify({logger: true}).withTypeProvider<ZodTypeProvider>();
 
 app.setSerializerCompiler(serializerCompiler);
 app.setValidatorCompiler(validatorCompiler);
