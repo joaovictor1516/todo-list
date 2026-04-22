@@ -9,6 +9,8 @@ export const testPool = new Pool({
     database: env.DATABASE_TEST_NAME
 });
 
+const connectionStringTestDatabase = `postgresql://${env.DATABASE_USER}:${env.DATABASE_PASSWORD}@${env.DATABASE_HOST}:${env.DATABASE_PORT}/${env.DATABASE_TEST_NAME}`;
+
 testPool.on("connect", () => {
     console.log("Test data base connected.");
 })

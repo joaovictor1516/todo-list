@@ -9,6 +9,8 @@ export const pool = new Pool({
     database: env.DATABASE_NAME
 });
 
+const connectionString = `postgresql://${env.DATABASE_USER}:${env.DATABASE_PASSWORD}@${env.DATABASE_HOST}:${env.DATABASE_PORT}/${env.DATABASE_NAME}`;
+
 pool.on("connect", () => {
     console.log("Data base connected.");
 });
