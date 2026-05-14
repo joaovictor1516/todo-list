@@ -17,5 +17,8 @@ export const taskTableTest = pgTable("tasksTest", {
     task_created_at: timestamp().notNull().defaultNow(),
     task_event_date: timestamp(),
     task_priority: varchar({length: 6}).notNull(),
-    user_id: uuid().defaultRandom().references(() => userTableTest.user_id)
+    user_id: uuid().defaultRandom().references(() => userTableTest.user_id, {
+        onDelete: "cascade",
+        onUpdate: "cascade"
+    })
 });
