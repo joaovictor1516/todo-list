@@ -1,15 +1,12 @@
-import { env } from "../libs/envSchema";
+import { buildDatabaseUrl } from "../libs/buildDatabaseUrl";
+import { drizzle } from "drizzle-orm/node-postgres";
 import { Pool } from "pg";
 
-export const pool = new Pool({
-    host: env.DATABASE_HOST,
-    port: env.DATABASE_PORT,
-    user: env.DATABASE_USER,
-    password: env.DATABASE_PASSWORD,
-    database: env.DATABASE_NAME
+const pool = new Pool({
+    connectionString: buildDatabaseUrl()
 });
 
-const connectionString = `postgresql://${env.DATABASE_USER}:${env.DATABASE_PASSWORD}@${env.DATABASE_HOST}:${env.DATABASE_PORT}/${env.DATABASE_NAME}`;
+export const dataBase = drizzle(pool);
 
 pool.on("connect", () => {
     console.log("Data base connected.");
