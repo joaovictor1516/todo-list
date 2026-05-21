@@ -3,11 +3,10 @@ import { TaskController } from "../controllers/task.controller";
 import { TaskRepository } from "../repository/task.repository";
 import { TaskService } from "../service/task.service";
 import { FastifyInstance } from "fastify";
-import { pool } from "../database";
 import { z } from "zod";
 
 export async function TaskRoute(app: FastifyInstance){
-    const taskRepository = new TaskRepository(pool);
+    const taskRepository = new TaskRepository();
     const taskService = new TaskService(taskRepository);
     const taskController = new TaskController(taskService);
     app.get("/",
