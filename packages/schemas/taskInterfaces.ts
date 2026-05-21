@@ -26,7 +26,8 @@ const taskDb = z.object({
     lastUpdate: z.date(),
     eventDate: z.date(),
     priority: z.enum(["low", "medium", "high"]).default("low"),
-    isCompleted: z.boolean().default(false)
+    isCompleted: z.boolean().default(false),
+    userId: z.uuid().nullable()
 });
 
 export type TaskInterface = z.infer<typeof taskPublic>;
