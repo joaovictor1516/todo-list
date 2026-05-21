@@ -1,46 +1,78 @@
 import { TaskDbDto, TaskRepositoryInterface } from "../../../../packages/schemas/taskInterfaces";
-import { Pool } from "pg";
+import { taskTable } from "../database/migrations/001.createTables";
+import { dataBase } from "../database";
+import { eq } from "drizzle-orm";
 
 export class TaskRepository implements TaskRepositoryInterface{
-    constructor(private pool: Pool){}
+    async createTask(task: TaskDbDto):Promise<TaskDbDto>{
+        const [newTask] = await dataBase
+            .insert(taskTable)
+            .values({
+                id: task.id,
+                title: task.title,
+                content: task.content,
+                isCompleted: task.isCompleted,
+                createdAt: task.createdAt,
+                lastUpdate: task.lastUpdate,
+                eventDate: task.eventDate,
+                priority: task.priority,
+                userId: task.userId
+            })
+            .returning();
 
-    async createTask(task: TaskDbDto):Promise<TaskDbDto> {
-        const newTask = await this.pool.query("INSERT INTO tasks (task_id, task_title, task_content, task_is_completed, task_created_at, task_event_date, task_priority)  VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *",
-            [task.id, task.title, task.content, task.isCompleted, task.createdAt, task.eventDate, task.priority]
-        );
+        return newTask;
+    };
 
-        return newTask.rows[0];
-    }
+    async getTasks():Promise<TaskDbDto[]>{
+        return await dataBase.select().from(taskTable);
+    };
 
-    async getTasks():Promise<TaskDbDto[]> {
-        const tasks = await this.pool.query("SELECT * FROM tasks");
+    async getTaskById(id: string):Promise<TaskDbDto | null>{
+        const [task] = await dataBase
+            .select()
+            .from(taskTable)
+            .where(eq(taskTable.id, id));
+        
+        return task;
+    };
 
-        return tasks.rows;
-    }
+    async updateTask(id: string, task: TaskDbDto):Promise<TaskDbDto>{
+        const [taskUpdated] = await dataBase
+            .update(taskTable)
+            .set({
+                title: task.title,
+                content: task.content,
+                isCompleted: task.isCompleted,
+                createdAt: task.createdAt,
+                lastUpdate: task.lastUpdate,
+                eventDate: task.eventDate,
+                priority: task.priority,
+                userId: task.userId
+            })
+            .where(eq(taskTable.id, id))
+            .returning();
 
-    async getTaskById(id: string):Promise<TaskDbDto | null> {
-        const task = await this.pool.query("SELECT * FROM tasks WHERE task_id = $1", [id]);
-
-        return task.rows[0];
-    }
-
-    async updateTask(id: string, task: TaskDbDto):Promise<TaskDbDto> {
-        const taskUpdated = await this.pool.query("UPDATE tasks SET task_title = $2, task_content = $3, task_is_completed = $4, task_event_date = $5, task_priority = $6 WHERE task_id = $1 RETURNING *",
-            [id, task.title, task.content, task.isCompleted, task.eventDate, task.priority]
-        );
-
-        return taskUpdated.rows[0];
-    }
+        return taskUpdated;
+    };
 
     async checkTask(id: string):Promise<TaskDbDto>{
-        const taskChecked = await this.pool.query("UPDATE tasks SET task_is_completed = true WHERE task_id = $1 RETURNING *", [id]);
-
-        return taskChecked.rows[0];
-    }
-
-    async deleteTask(id: string):Promise<boolean> {
-        const task = await this.pool.query("DELETE FROM tasks WHERE task_id = $1", [id]);
+        const [task] = await dataBase
+            .update(taskTable)
+            .set({
+                isCompleted: true
+            })
+            .where(eq(taskTable.id, id))
+            .returning();
         
-        return (task.rowCount ?? 0) > 0;
-    }
+        return task;
+    };
+
+    async deleteTask(id: string):Promise<boolean>{
+        const result = await dataBase
+            .delete(taskTable)
+            .where(eq(taskTable.id, id))
+            .returning();
+
+        return result.length === 0;
+    };
 }
