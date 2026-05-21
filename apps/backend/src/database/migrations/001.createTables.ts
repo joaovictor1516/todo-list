@@ -15,6 +15,7 @@ export const taskTable = pgTable("tasks", {
     task_content: varchar({length: 100}).notNull(),
     task_is_completed: boolean().notNull().default(false),
     task_created_at: timestamp().notNull().defaultNow(),
+    task_last_update: timestamp(),
     task_event_date: timestamp(),
     task_priority: varchar({length: 6}).notNull(),
     user_id: uuid().defaultRandom().references(() => userTable.user_id, {
