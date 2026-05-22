@@ -9,5 +9,6 @@ export const taskDataMock = (overrides: Partial<TaskDbDto> = {}): TaskDbDto => (
     lastUpdate: new Date("2024-01-01T00:00:00.000Z"),
     isCompleted: false,
     priority: "high",
+    userId: "1",
     ...overrides
 });
