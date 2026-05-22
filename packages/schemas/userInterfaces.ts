@@ -25,7 +25,7 @@ const userDb = z.object({
     name: z.string().min(3),
     email: z.email(),
     passwordHash: z.string(),
-    points: z.number().default(0),
+    points: z.number(),
     createdAt: z.date()
 });
 
