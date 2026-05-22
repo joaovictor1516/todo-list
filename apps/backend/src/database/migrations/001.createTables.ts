@@ -1,11 +1,11 @@
 import { pgTable, uuid, varchar, text, integer, boolean, timestamp } from "drizzle-orm/pg-core";
 
 export const userTable = pgTable("users", {
-    id: uuid("id").defaultRandom().primaryKey(),
+    id: uuid("id").primaryKey(),
     
     email: varchar("email", {length: 254}).unique().notNull(),
     
-    password: text("password").notNull(),
+    passwordHash: text("password_hash").notNull(),
     
     name: varchar("name", {length: 50}).unique().notNull(),
     
@@ -17,7 +17,7 @@ export const userTable = pgTable("users", {
 });
 
 export const taskTable = pgTable("tasks", {
-    id: uuid("id").defaultRandom().primaryKey(),
+    id: uuid("id").primaryKey(),
     
     title: varchar("title", {length: 25}).notNull(),
     
