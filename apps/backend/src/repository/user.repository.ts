@@ -1,55 +1,86 @@
 import { UserDbDto, UserInputDto, UserRepositoryInterface } from "../../../../packages/schemas/userInterfaces";
 import { TaskDbDto } from "../../../../packages/schemas/taskInterfaces";
-import { Pool } from "pg";
+import { userTable, taskTable } from "../database/migrations/001.createTables";
+import { dataBase } from "../database";
+import { eq } from "drizzle-orm";
 
 export class UserRepository implements UserRepositoryInterface{
-    constructor(private pool: Pool){}
-
     async createUser(user: UserDbDto):Promise<UserDbDto>{
-        const newUser = await this.pool.query("INSERT INTO users (user_id, user_email, user_name, user_points, user_created_at) VALUES ($1, $2, $3, $4, $5) RETURNING *", [user.id, user.email, user.name, user.points, user.createdAt]);
+        const [newUser] = await dataBase
+            .insert(userTable)
+            .values({
+                id: user.id,
+                name: user.name,
+                email: user.email,
+                passwordHash: user.passwordHash,
+                points: user.points,
+                createdAt: user.createdAt
+            })
+            .returning();
 
-        return newUser.rows[0];
-    }
+        return newUser;
+    };
 
     async getUsers():Promise<UserDbDto[]>{
-        const users = await this.pool.query("SELECT * FROM users");
+        return await dataBase.select().from(userTable);
+    };
 
-        return users.rows;
-    }
+    async getUserById(id: string):Promise<UserDbDto>{
+        const [user] = await dataBase
+            .select()
+            .from(userTable)
+            .where(eq(userTable.id, id));
 
-    async getUserById(id: string):Promise<UserDbDto | null>{
-        const user = await this.pool.query("SELECT * FROM users WHERE user_id = $1", [id]);
+        return user;
+    };
 
-        return user.rows[0];
-    }
+    async getUserByEmail(email: string):Promise<UserDbDto>{
+        const [user] = await dataBase
+            .select()
+            .from(userTable)
+            .where(eq(userTable.email, email));
 
-    async getUserByEmail(email: string): Promise<UserDbDto | null>{
-        const user = await this.pool.query("SELECT * FROM users WHERE user_email = $1", [email]);
+        return user;
+    };
 
-        return user.rows[0];
-    }
+    async getUserTasks(id: string):Promise<TaskDbDto[]>{
+        const tasks = await dataBase
+            .select()
+            .from(taskTable)
+            .where(eq(taskTable.userId, id));
 
-    async getUserTasks(id: string): Promise<TaskDbDto[]>{
-        const userTasks = await this.pool.query("SELECT * FROM tasks WHERE user_id = $1", [id]);
-        
-        return userTasks.rows;
-    }
+        return tasks;
+    };
 
     async updateUser(id: string, user: UserInputDto):Promise<UserDbDto>{
-        const userUpdated = await this.pool.query("UPDATE users SET user_email = $2, user_name = $3 WHERE user_id = $1 RETURNING *", [id, user.email, user.name]);
+        const [userUpdated] = await dataBase
+            .update(userTable)
+            .set({
+                name: user.name,
+                email: user.email
+            })
+            .returning();
 
-        return userUpdated.rows[0];
-    }
+        return userUpdated;
+    };
 
     async updatePoint(id: string, userNewPoint: number):Promise<UserDbDto>{
-        const userUpdatedPoint = await this.pool.query("UPDATE users set user_points = $2 WHERE user_id = $1 RETURNING *", [id, userNewPoint]);
+        const [userUpdated] = await dataBase
+            .update(userTable)
+            .set({
+                points: userNewPoint
+            })
+            .returning();
 
-        return userUpdatedPoint.rows[0];
-    }
+        return userUpdated;
+    };
 
     async deleteUser(id: string):Promise<boolean>{
-        const user = await this.pool.query("DELETE FROM users WHERE user_id = $1", [id]);
+        const result = await dataBase
+            .delete(userTable)
+            .where(eq(userTable.id, id))
+            .returning();
 
-        return (user.rowCount ?? 0) > 0;
-    }
+        return result.length === 0;
+    };
 }
