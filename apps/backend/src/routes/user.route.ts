@@ -3,11 +3,10 @@ import { UserController } from "../controllers/user.controller";
 import { UserRepository } from "../repository/user.repository";
 import { UserService } from "../service/user.service";
 import { FastifyInstance } from "fastify";
-import { pool } from "../database";
 import { z } from "zod";
 
 export async function UserRoute(app: FastifyInstance){
-    const userRepository = new UserRepository(pool);
+    const userRepository = new UserRepository();
     const userService = new UserService(userRepository);
     const userController = new UserController(userService);
 
