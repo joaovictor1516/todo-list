@@ -7,15 +7,16 @@ export const taskPublic = z.object({
     createdAt: z.date(),
     lastUpdate: z.date(),
     eventDate: z.date(),
-    priority: z.enum(["low", "medium", "high"]).default("low"),
-    isCompleted: z.boolean().default(false)
+    priority: z.enum(["low", "medium", "high"]),
+    isCompleted: z.boolean(),
+    userId: z.uuid().nullable()
 });
 
 const taskInput = z.object({
     title: z.string().min(3),
     content: z.string().min(5),
     eventDate: z.date(),
-    priority: z.enum(["low", "medium", "high"]).default("low"),
+    priority: z.enum(["low", "medium", "high"])
 });
 
 const taskDb = z.object({
@@ -25,8 +26,8 @@ const taskDb = z.object({
     createdAt: z.date(),
     lastUpdate: z.date(),
     eventDate: z.date(),
-    priority: z.enum(["low", "medium", "high"]).default("low"),
-    isCompleted: z.boolean().default(false),
+    priority: z.enum(["low", "medium", "high"]),
+    isCompleted: z.boolean(),
     userId: z.uuid().nullable()
 });
 
