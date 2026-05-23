@@ -29,7 +29,8 @@ describe("Task service tests:", () => {
             id: "2",
             title: "Estudar React.JS",
             content: "Criar vergonha na cara e melhorar a saude.",
-            priority: "medium"
+            priority: "medium",
+            userId: "1"
         })]);
 
         const result = await service.getTasks();
@@ -38,7 +39,8 @@ describe("Task service tests:", () => {
             id: "2",
             title: "Estudar React.JS",
             content: "Criar vergonha na cara e melhorar a saude.",
-            priority: "medium"
+            priority: "medium",
+            userId: "1"
         })]);
 
         expect(repository.getTasks)
@@ -116,29 +118,43 @@ describe("Task service tests:", () => {
 
     test("Update a task test:", async () => {
         repository.getTaskById.mockResolvedValue(taskDataMock({
-            id: "1",
-            priority: "medium"
+            id: "1"
         }));
 
         repository.updateTask.mockResolvedValue(taskDataMock({
             id: "1",
             title: "Estudar React",
             content: "Praticar mais o desenvolvimento do front de um projeto!!",
+            createdAt: new Date("2024-01-01T00:00:00.000Z"),
+            eventDate: new Date("2024-01-01T00:00:00.000Z"),
             lastUpdate: new Date("2024-02-01T00:00:00.000Z"),
+            isCompleted: false,
+            priority: "high",
+            userId: "1",
         }));
 
         const result = await service.updateTask("1", taskDataMock({
             id: "1",
             title: "Estudar React",
             content: "Praticar mais o desenvolvimento do front de um projeto!!",
-            lastUpdate: new Date("2024-02-01T00:00:00.000Z")
+            createdAt: new Date("2024-01-01T00:00:00.000Z"),
+            eventDate: new Date("2024-01-01T00:00:00.000Z"),
+            lastUpdate: new Date("2024-02-01T00:00:00.000Z"),
+            isCompleted: false,
+            priority: "high",
+            userId: "1",
         }));
 
         expect(result).toEqual(taskDataMock({
             id: "1",
             title: "Estudar React",
             content: "Praticar mais o desenvolvimento do front de um projeto!!",
-            lastUpdate: new Date("2024-02-01T00:00:00.000Z")
+            createdAt: new Date("2024-01-01T00:00:00.000Z"),
+            eventDate: new Date("2024-01-01T00:00:00.000Z"),
+            lastUpdate: new Date("2024-02-01T00:00:00.000Z"),
+            isCompleted: false,
+            priority: "high",
+            userId: "1",
         }));
 
         expect(repository.getTaskById)
@@ -149,7 +165,12 @@ describe("Task service tests:", () => {
                 id: "1",
                 title: "Estudar React",
                 content: "Praticar mais o desenvolvimento do front de um projeto!!",
-                lastUpdate: new Date("2024-02-01T00:00:00.000Z")
+                createdAt: new Date("2024-01-01T00:00:00.000Z"),
+                eventDate: new Date("2024-01-01T00:00:00.000Z"),
+                lastUpdate: new Date("2024-02-01T00:00:00.000Z"),
+                isCompleted: false,
+                priority: "high",
+                userId: "1",
             }));
     });
 
